@@ -13,9 +13,10 @@ public class MasterAlien extends Alien{
 	private int updateCounter = 0;
 	private int shootCountDown = (int) ((Math.random() + 0) * 240);
 	boolean edge = false;
+	private boolean master = true;
 
-	public MasterAlien(int x, int y, int w, int h) {
-		super(x, y, w, h);
+	public MasterAlien(int x, int y, int w, int h, boolean master) {
+		super(x, y, w, h, master);
 	}
 
 	public void update() {
@@ -39,12 +40,17 @@ public class MasterAlien extends Alien{
 				getBounds().y += getBounds().height*2;
 			}
 		}
+		
+	
 
 
 		if(shootCountDown > 0) {
 			shootCountDown--;
 		}
 
+	}
+	public boolean isMaster() {
+		return master;
 	}
 	public Laser shoot() {
 		if(shootCountDown <= 0) {

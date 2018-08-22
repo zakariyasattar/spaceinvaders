@@ -7,17 +7,17 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 
-public class GameOverScreen extends Screen
+public class WinScreen extends Screen
 {
-	public GameOverScreen(GameState s, int w, int h) {
+	public WinScreen(GameState s, int w, int h) {
 		super(s, w, h);
 	}
 
 	public void render(Graphics2D g) {
 		g.setFont(new Font("Playbill", Font.BOLD, 60));
-		g.setColor(Color.red);
+		g.setColor(Color.magenta);
 
-		g.drawString("Game Over", 220, 175);
+		g.drawString("You Won !!!", 220, 175);
 		
 		g.setFont(new Font("Playbill", Font.BOLD, 30));
 		g.setColor(Color.white);

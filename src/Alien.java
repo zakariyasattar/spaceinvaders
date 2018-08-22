@@ -11,9 +11,14 @@ public class Alien extends GameObject {
     private int updateCounter = 0;
     private int shootCountDown = (int) ((Math.random() + 0) * 240);
     boolean edge = false;
-
-	public Alien(int x, int y, int w, int h) {
+    private boolean master = false;
+    
+	public Alien(int x, int y, int w, int h, boolean master) {
         super(x, y, w, h);
+        master = false;
+	}
+	public boolean isMaster() {
+		return master;
 	}
 
 	public void update() {
@@ -47,7 +52,7 @@ public class Alien extends GameObject {
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
 			shootCountDown = (int) ((Math.random() + 0) * 240);
-			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 4, 12, -1);
+			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1);
 		}
 		else
 			return null;

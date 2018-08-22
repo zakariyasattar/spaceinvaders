@@ -42,7 +42,7 @@ public class GameRunner extends JFrame implements WindowListener, KeyListener, M
     
     private AffineTransform screenScale;
     private AffineTransform inverseScale = new AffineTransform();
-    
+    	
     //controls full screen staus of the app
     private boolean shouldDoFullScreen = false;
     private boolean shouldScaleScreen = false;
@@ -452,13 +452,13 @@ public class GameRunner extends JFrame implements WindowListener, KeyListener, M
         g2.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
         g2.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
         
-        //do scaling and cliping
+        //do scaling and clipping
         if(screenScale != null) {
             ((Graphics2D)g).transform(screenScale);
             g.setClip(0, 0, desiredWidth, desiredHeight);
         }
         
-        g.setColor(Color.BLACK);
+        g.setColor(Color.black);
         g.fillRect(0, 0, desiredWidth, desiredHeight);
         render(g);
         

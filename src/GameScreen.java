@@ -19,6 +19,7 @@ public class GameScreen extends Screen
 	private int playerDamageCounter;
 	private int lives = 3;
 	private int score;
+	private int[] randomNums;
 
 	//this class inherits the following final variables (so you can't change them!)
 	//
@@ -36,6 +37,7 @@ public class GameScreen extends Screen
 		int y = 100;
 		aliens = new ArrayList<Alien>();
 		lasers = new ArrayList<Laser>();
+		
 		powerups = new ArrayList<PowerUp>();
 
 		player = new Player(width/2 - 23, height - 24, 45, 24);
@@ -43,12 +45,17 @@ public class GameScreen extends Screen
 		for(int outer = 0; outer < 7; outer++) {
 			y += 35;
 			for(int inner = 0; inner < 5; inner++) {
-				aliens.add(new Alien(x, y, 37, 25));
+				aliens.add(new Alien(x, y, 37, 25, false));
 				x+=55;
 			}
 			x = 20;
 		}
-		aliens.add(new MasterAlien(130, 75, 37, 25));
+		aliens.add(new MasterAlien(130, 75, 37, 25, true));
+		randomNums = new int[aliens.size()];
+		for(int j = 0; j <= aliens.size() - 1; j++) {
+			int k = (int) ((Math.random() + 0) * aliens.size() - 1);
+			randomNums[j] = x;
+		}
 		score = 0;
 	}
 
@@ -68,7 +75,7 @@ public class GameScreen extends Screen
 		g.drawString("score: " + score, 660, 50);
 		g.drawString("lives:  " + lives, 660, 75);
 	}
-	
+
 	public void gameWon(Graphics2D g) {
 		g.drawString("You Won!", 30, 40);
 	}
@@ -76,9 +83,11 @@ public class GameScreen extends Screen
 	//update all the game objects in the game
 	public void update() {
 		
+		
 		for(int i = 0; i < aliens.size(); i++) {
 			Alien a = aliens.get(i);
 			a.update();
+			a = aliens.get(randomNums[i]);
 			Laser l = a.shoot();
 			if(l!=null)
 				lasers.add(l);
@@ -93,21 +102,25 @@ public class GameScreen extends Screen
 			Laser laser = lasers.get(k);
 			for(int l = 0; l < aliens.size(); l++) {
 				Alien alien = aliens.get(l);
-				if(alien.intersects(laser) && laser.getDirection() == 1) { 
-					System.out.println("alien");
+				if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
+					lasers.remove(k);
+					score++;
+					aliens.remove(aliens.size() - 1);
+					state.switchToWinScreen();
+					break;
+				}
+				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
 					lasers.remove(k);
 					score++;
 					aliens.remove(l);
-					if(l == aliens.size() - 1) {
-						gameOver();
-					}
+					
 					break;
 				}
+				
 
 			}
 
 			if(player.intersects(laser) && laser.getDirection() == -1) { 
-				System.out.println("player");
 				playerDamageCounter++;
 				lasers.remove(laser);
 				System.out.println(playerDamageCounter);
@@ -117,78 +130,77 @@ public class GameScreen extends Screen
 					playerDamageCounter = 0;
 					System.out.println("lives:" + lives);
 					if(lives <= 0) {
-						System.out.println("Game Over");
 						gameOver();
 					}
 				}
 				break;
 			}
 		}
-	
-	if(powerUpCountDown <= 0) {
-		powerUpCountDown = (int) (Math.random() + 30) * 140;
-		PowerUp powerup = new PowerUp(30,40, 4, 12 );
-		powerups.add(powerup);
-	}
 
-	for(int i = powerups.size() - 1; i > 0; i--) {
-		PowerUp powerup = powerups.get(i);
-		powerup.update();
-		if(player.intersects(powerup)) { 
-			powerups.remove(i);
-			lives++;
+		if(powerUpCountDown <= 0) {
+			powerUpCountDown = (int) (Math.random() + 30) * 140;
+			PowerUp powerup = new PowerUp(30,40, 4, 12 );
+			powerups.add(powerup);
+		}
+
+		for(int i = powerups.size() - 1; i > 0; i--) {
+			PowerUp powerup = powerups.get(i);
+			powerup.update();
+			if(player.intersects(powerup)) { 
+				powerups.remove(i);
+				lives++;
+			}
+		}
+		player.update();
+	}
+	//handles key press events
+	public void keyPressed(KeyEvent e)
+	{
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_Q)
+			state.switchToWelcomeScreen();
+		else if(code == KeyEvent.VK_LEFT)
+			player.setMovingLeft(true);
+		else if(code == KeyEvent.VK_RIGHT)
+			player.setMovingRight(true);
+		else if(code == KeyEvent.VK_SPACE) {
+			Laser l  = player.shoot();
+			if(l != null) {
+				lasers.add(l);
+			}
 		}
 	}
-	player.update();
-}
-//handles key press events
-public void keyPressed(KeyEvent e)
-{
-	int code = e.getKeyCode();
-	if(code == KeyEvent.VK_Q)
-		state.switchToWelcomeScreen();
-	else if(code == KeyEvent.VK_LEFT)
-		player.setMovingLeft(true);
-	else if(code == KeyEvent.VK_RIGHT)
-		player.setMovingRight(true);
-	else if(code == KeyEvent.VK_SPACE) {
-		Laser l  = player.shoot();
-		if(l != null) {
-			lasers.add(l);
-		}
+
+	//handles key released events
+	public void keyReleased(KeyEvent e)
+	{
+		int code = e.getKeyCode();
+		if(code == KeyEvent.VK_LEFT)
+			player.setMovingRight(false);
+		if(code == KeyEvent.VK_RIGHT)
+			player.setMovingLeft(false);
 	}
-}
 
-//handles key released events
-public void keyReleased(KeyEvent e)
-{
-	int code = e.getKeyCode();
-	if(code == KeyEvent.VK_LEFT)
-		player.setMovingRight(false);
-	if(code == KeyEvent.VK_RIGHT)
-		player.setMovingLeft(false);
-}
+	//should be called when the game is over
+	public void gameOver() {
+		//sets up the next game
+		initGame();
 
-//should be called when the game is over
-public void gameOver() {
-	//sets up the next game
-	initGame();
+		//switch to the game over screen
+		state.switchToGameOverScreen();
+	}
 
-	//switch to the game over screen
-	state.switchToGameOverScreen();
-}
-
-//implement these methods if your player can use the mouse
-public void mousePressed(Point2D p)
-{
-}
-public void mouseReleased(Point2D p)
-{
-}
-public void mouseMoved(Point2D p)
-{
-}
-public void mouseDragged(Point2D p)
-{
-}
+	//implement these methods if your player can use the mouse
+	public void mousePressed(Point2D p)
+	{
+	}
+	public void mouseReleased(Point2D p)
+	{
+	}
+	public void mouseMoved(Point2D p)
+	{
+	}
+	public void mouseDragged(Point2D p)
+	{
+	}
 }
