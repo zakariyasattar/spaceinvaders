@@ -41,10 +41,10 @@ public class GameScreen extends Screen
 		player = new Player(width/2 - 23, height - 24, 45, 24);
 		
 		for(int outer = 0; outer < 7; outer++) {
-			y += 20;
+			y += 25;
 			for(int inner = 0; inner < 5; inner++) {
 				aliens.add(new Alien(x, y, 37, 25));
-				x+=40;
+				x+=45;
 			}
 			x = 20;
 		}
