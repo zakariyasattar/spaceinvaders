@@ -7,7 +7,7 @@ import java.awt.geom.*;
 
 public class Alien extends GameObject {
 
-    private Image image = ImageLoader.loadCompatibleImage("sprites/greenalien.png");
+    private Image image = ImageLoader.loadCompatibleImage("sprites/alienA1.png");
     private int updateCounter = 0;
     private int shootCountDown = (int) ((Math.random() + 0) * 240);
     boolean edge = false;
@@ -24,14 +24,14 @@ public class Alien extends GameObject {
         //every 120th update, move the bounds of the alien half it's width to the right
         
         if(getBounds().x < 755 && edge == false) {
-        	getBounds().x += 1;
+        	getBounds().x += 0.5;
         	if(getBounds().x == 755) {
         		edge = true;
         		getBounds().y += getBounds().height*2;
         	}
         }
         else if(getBounds().x > 0 && edge == true) {
-        	getBounds().x -= 1;
+        	getBounds().x -= 0.5;
         	if(getBounds().x == 0) {
         		edge = false;
         		getBounds().y += getBounds().height*2;
