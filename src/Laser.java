@@ -13,10 +13,10 @@ public class Laser extends GameObject {
 
 	public void update() {
 		if(direction == -1) {
-			getBounds().y++;
+			getBounds().y+=5;
 		}
 		if(direction == 1) {
-			getBounds().y--;
+			getBounds().y-=5;
 			
 		}
     }

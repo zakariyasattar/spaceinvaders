@@ -20,6 +20,8 @@ public class GameScreen extends Screen
 	private int lives = 3;
 	private int score;
 	private int[] randomNums;
+	private int timer = 90;
+	private boolean[] dead;
 
 	//this class inherits the following final variables (so you can't change them!)
 	//
@@ -36,6 +38,7 @@ public class GameScreen extends Screen
 		int x = 20;
 		int y = 100;
 		aliens = new ArrayList<Alien>();
+		
 		lasers = new ArrayList<Laser>();
 		
 		powerups = new ArrayList<PowerUp>();
@@ -44,19 +47,26 @@ public class GameScreen extends Screen
 
 		for(int outer = 0; outer < 7; outer++) {
 			y += 35;
-			for(int inner = 0; inner < 5; inner++) {
+			for(int inner = 0; inner < 7; inner++) {
 				aliens.add(new Alien(x, y, 37, 25, false));
 				x+=55;
 			}
 			x = 20;
 		}
-		aliens.add(new MasterAlien(130, 75, 37, 25, true));
+		aliens.add(new MasterAlien(185, 75, 37, 25, true));
 		randomNums = new int[aliens.size()];
+		dead = new boolean[aliens.size() - 1];
 		for(int j = 0; j <= aliens.size() - 1; j++) {
 			int k = (int) ((Math.random() + 0) * aliens.size() - 1);
-			randomNums[j] = x;
+			if(dead[k] == true) {
+				continue;
+			}
+			else {
+				randomNums[j] = k;
+			}
 		}
 		score = 0;
+		
 	}
 
 	//render all the game objects in the game
@@ -83,14 +93,19 @@ public class GameScreen extends Screen
 	//update all the game objects in the game
 	public void update() {
 		
-		
 		for(int i = 0; i < aliens.size(); i++) {
 			Alien a = aliens.get(i);
 			a.update();
 			a = aliens.get(randomNums[i]);
-			Laser l = a.shoot();
-			if(l!=null)
-				lasers.add(l);
+			timer--;
+			if(timer <= 0) {
+				timer = 90;
+				Laser l = a.shoot();
+				if(l!=null)
+					lasers.add(l);
+				
+			}
+			
 		}
 
 		for(int j = 0; j < lasers.size(); j++) {
@@ -105,7 +120,10 @@ public class GameScreen extends Screen
 				if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
 					lasers.remove(k);
 					score++;
-					aliens.remove(aliens.size() - 1);
+					alienDamageCounter++;
+					if(alienDamageCounter == 3) {
+						aliens.remove(aliens.size() - 1);
+					}
 					state.switchToWinScreen();
 					break;
 				}
@@ -113,7 +131,7 @@ public class GameScreen extends Screen
 					lasers.remove(k);
 					score++;
 					aliens.remove(l);
-					
+					dead[l] = true;
 					break;
 				}
 				
