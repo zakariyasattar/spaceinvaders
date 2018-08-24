@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class GameScreen extends Screen
 {
@@ -20,7 +21,7 @@ public class GameScreen extends Screen
 	private int lives = 3;
 	private int score;
 	private int[] randomNums;
-	private int timer = 90;
+	private int timer = 0;
 	private boolean[] dead;
 
 	//this class inherits the following final variables (so you can't change them!)
@@ -38,9 +39,9 @@ public class GameScreen extends Screen
 		int x = 20;
 		int y = 100;
 		aliens = new ArrayList<Alien>();
-		
+
 		lasers = new ArrayList<Laser>();
-		
+
 		powerups = new ArrayList<PowerUp>();
 
 		player = new Player(width/2 - 23, height - 24, 45, 24);
@@ -66,7 +67,7 @@ public class GameScreen extends Screen
 			}
 		}
 		score = 0;
-		
+
 	}
 
 	//render all the game objects in the game
@@ -92,20 +93,25 @@ public class GameScreen extends Screen
 
 	//update all the game objects in the game
 	public void update() {
-		
+
 		for(int i = 0; i < aliens.size(); i++) {
 			Alien a = aliens.get(i);
 			a.update();
-			a = aliens.get(randomNums[i]);
-			timer--;
-			if(timer <= 0) {
-				timer = 90;
-				Laser l = a.shoot();
-				if(l!=null)
-					lasers.add(l);
-				
+			if(randomNums[i] < aliens.size()) {
+				a = aliens.get(randomNums[i]);
 			}
 			
+			Laser l = a.shoot();
+			if(l!=null)
+				lasers.add(l);
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
 		}
 
 		for(int j = 0; j < lasers.size(); j++) {
@@ -134,19 +140,16 @@ public class GameScreen extends Screen
 					dead[l] = true;
 					break;
 				}
-				
+
 
 			}
 
 			if(player.intersects(laser) && laser.getDirection() == -1) { 
 				playerDamageCounter++;
 				lasers.remove(laser);
-				System.out.println(playerDamageCounter);
 				if(playerDamageCounter == 2) {
-					System.out.println(playerDamageCounter);
-					lives--;
+					lives--; 
 					playerDamageCounter = 0;
-					System.out.println("lives:" + lives);
 					if(lives <= 0) {
 						gameOver();
 					}
