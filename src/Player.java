@@ -14,6 +14,7 @@ public class Player extends GameObject {
     private boolean movingLeft = false;
     private boolean movingRight = false;
     private int shootCountDown = 0;
+    
 
 	public Player(int x, int y, int w, int h) {
         super(x, y, w, h);

@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.io.*;
 
 public class GameScreen extends Screen
 {
@@ -23,6 +24,7 @@ public class GameScreen extends Screen
 	private int[] randomNums;
 	private int timer = 0;
 	private boolean[] dead;
+	private int pos = 0;
 
 	//this class inherits the following final variables (so you can't change them!)
 	//
@@ -36,6 +38,8 @@ public class GameScreen extends Screen
 
 	//initialize our variables before the next game begins
 	public void initGame() {
+		Sound song = new Sound("spaceinvadersmusic.wav");
+		song.play();
 		int x = 20;
 		int y = 100;
 		aliens = new ArrayList<Alien>();
@@ -46,7 +50,7 @@ public class GameScreen extends Screen
 
 		player = new Player(width/2 - 23, height - 24, 45, 24);
 
-		for(int outer = 0; outer < 7; outer++) {
+		for(int outer = 0; outer < 5; outer++) {
 			y += 35;
 			for(int inner = 0; inner < 7; inner++) {
 				aliens.add(new Alien(x, y, 37, 25, false));
@@ -58,7 +62,7 @@ public class GameScreen extends Screen
 		randomNums = new int[aliens.size()];
 		dead = new boolean[aliens.size() - 1];
 		for(int j = 0; j < 3; j++) {
-			int k = (int) ((Math.random() + 0) * 7);
+			int k = (int) ((Math.random() + 0) * 10);
 			if(dead[k] == true) {
 				continue;
 			}
@@ -107,10 +111,7 @@ public class GameScreen extends Screen
 			Laser l = a.shoot();
 			if(l!=null)
 				lasers.add(l);
-			
-			if(a.getBounds().y == player.getBounds().height) {
-				gameOver();
-			}
+
 		}
 
 		for(int j = 0; j < lasers.size(); j++) {
@@ -127,9 +128,8 @@ public class GameScreen extends Screen
 					score++;
 					alienDamageCounter++;
 					if(alienDamageCounter == 3) {
-						aliens.remove(aliens.size() - 1);
+						state.switchToWinScreen();
 					}
-					state.switchToWinScreen();
 					break;
 				}
 				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
@@ -137,7 +137,7 @@ public class GameScreen extends Screen
 					score++;
 					aliens.remove(l);
 					dead[l] = true;
-					if(score == 49) {
+					if(score == 35) {
 						state.switchToWinScreen();
 					}
 					break;
@@ -174,10 +174,27 @@ public class GameScreen extends Screen
 				lives++;
 			}
 		}
+
+
+		pos++;
+		System.out.println(pos);
+		System.out.println(dead[pos]);
+		System.out.println("alienBound: " + aliens.get(pos).getBounds().y);
+		System.out.println("playerBound: " + player.getBounds().height);
+		if(dead[pos] == true) {
+		}
 		
+		else {
+			if(dead[pos] == false && aliens.get(pos).getBounds().y == player.getBounds().height) {
+				
+				gameOver();
+			}
+			
+		}
+		pos = 0;
 		player.update();
 	}
-	
+
 	//handles key press events
 	public void keyPressed(KeyEvent e)
 	{
