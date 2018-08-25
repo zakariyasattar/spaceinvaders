@@ -18,7 +18,7 @@ public class GameScreen extends Screen
 	private int powerUpCountDown = (int) (Math.random() + 30) * 140;
 	private int alienDamageCounter;
 	private int playerDamageCounter;
-	private int lives = 3;
+	static int lives = 3;
 	private int score;
 	private int[] randomNums;
 	private int timer = 0;
@@ -57,8 +57,8 @@ public class GameScreen extends Screen
 		aliens.add(new MasterAlien(185, 75, 37, 25, true));
 		randomNums = new int[aliens.size()];
 		dead = new boolean[aliens.size() - 1];
-		for(int j = 0; j <= aliens.size() - 1; j++) {
-			int k = (int) ((Math.random() + 0) * aliens.size() - 1);
+		for(int j = 0; j < 3; j++) {
+			int k = (int) ((Math.random() + 0) * 7);
 			if(dead[k] == true) {
 				continue;
 			}
@@ -95,23 +95,22 @@ public class GameScreen extends Screen
 	public void update() {
 
 		for(int i = 0; i < aliens.size(); i++) {
+			timer++;
+			if(timer == 7) {
+				timer = 0;
+			}
 			Alien a = aliens.get(i);
 			a.update();
-			if(randomNums[i] < aliens.size()) {
+			if(randomNums[timer] < aliens.size()) {
 				a = aliens.get(randomNums[i]);
 			}
-			
 			Laser l = a.shoot();
 			if(l!=null)
 				lasers.add(l);
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			
+			if(a.getBounds().y == player.getBounds().height) {
+				gameOver();
 			}
-
-
 		}
 
 		for(int j = 0; j < lasers.size(); j++) {
@@ -138,6 +137,9 @@ public class GameScreen extends Screen
 					score++;
 					aliens.remove(l);
 					dead[l] = true;
+					if(score == 49) {
+						state.switchToWinScreen();
+					}
 					break;
 				}
 
@@ -147,7 +149,7 @@ public class GameScreen extends Screen
 			if(player.intersects(laser) && laser.getDirection() == -1) { 
 				playerDamageCounter++;
 				lasers.remove(laser);
-				if(playerDamageCounter == 2) {
+				if(playerDamageCounter == 3) {
 					lives--; 
 					playerDamageCounter = 0;
 					if(lives <= 0) {
@@ -172,14 +174,17 @@ public class GameScreen extends Screen
 				lives++;
 			}
 		}
+		
 		player.update();
 	}
+	
 	//handles key press events
 	public void keyPressed(KeyEvent e)
 	{
 		int code = e.getKeyCode();
-		if(code == KeyEvent.VK_Q)
+		if(code == KeyEvent.VK_Q) {
 			state.switchToWelcomeScreen();
+		}
 		else if(code == KeyEvent.VK_LEFT)
 			player.setMovingLeft(true);
 		else if(code == KeyEvent.VK_RIGHT)

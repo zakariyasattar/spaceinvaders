@@ -69,7 +69,7 @@ public class GameRunner extends JFrame implements WindowListener, KeyListener, M
         super(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
         setIgnoreRepaint(true);
         
-        makeMouseInvisible(true); //called to make the mouse invisible when the game starts
+        makeMouseInvisible(false); //called to make the mouse invisible when the game starts
     }
     
     //called to make the mouse cursor disappear if inv is true, appear if false

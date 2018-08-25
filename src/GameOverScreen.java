@@ -27,30 +27,33 @@ public class GameOverScreen extends Screen
 	}
 
 	public void update() {
-
 	}
 
 	public void keyPressed(KeyEvent e)
 	{
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_ENTER)
+			GameScreen.lives = 3;
 			state.switchToWelcomeScreen();
 	}
 
-	public void keyReleased(KeyEvent e)
-	{
+	public void keyReleased(KeyEvent e){
+		
 	}
-
 	public void mousePressed(Point2D p)
 	{
+		
 	}
 	public void mouseReleased(Point2D p)
 	{
+		
 	}
 	public void mouseMoved(Point2D p)
 	{
+		
 	}
 	public void mouseDragged(Point2D p)
 	{
+		 
 	}
 }
