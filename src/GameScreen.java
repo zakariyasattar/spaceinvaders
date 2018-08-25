@@ -25,6 +25,10 @@ public class GameScreen extends Screen
 	private int timer = 0;
 	private boolean[] dead;
 	private int pos = 0;
+	Sound killInvader = new Sound("invaderkilled.wav");
+	Sound song = new Sound("spaceinvadersmusic.wav");
+	Sound explosion = new Sound("explosion.wav");
+	Sound shoot = new Sound("shoot.wav");
 
 	//this class inherits the following final variables (so you can't change them!)
 	//
@@ -38,7 +42,6 @@ public class GameScreen extends Screen
 
 	//initialize our variables before the next game begins
 	public void initGame() {
-		Sound song = new Sound("spaceinvadersmusic.wav");
 		song.play();
 		int x = 20;
 		int y = 100;
@@ -97,7 +100,10 @@ public class GameScreen extends Screen
 
 	//update all the game objects in the game
 	public void update() {
-
+		
+		if(!song.isPlaying()) {
+			song.play();
+		}
 		for(int i = 0; i < aliens.size(); i++) {
 			timer++;
 			if(timer == 7) {
@@ -125,16 +131,19 @@ public class GameScreen extends Screen
 				Alien alien = aliens.get(l);
 				if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
 					lasers.remove(k);
+					killInvader.play();
 					score++;
 					alienDamageCounter++;
 					if(alienDamageCounter == 3) {
 						state.switchToWinScreen();
+						explosion.play();
 					}
 					break;
 				}
 				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
 					lasers.remove(k);
 					score++;
+					killInvader.play();
 					aliens.remove(l);
 					dead[l] = true;
 					if(score == 35) {
@@ -207,9 +216,11 @@ public class GameScreen extends Screen
 		else if(code == KeyEvent.VK_RIGHT)
 			player.setMovingRight(true);
 		else if(code == KeyEvent.VK_SPACE) {
+			
 			Laser l  = player.shoot();
 			if(l != null) {
 				lasers.add(l);
+				shoot.play();
 			}
 		}
 	}
