@@ -10,7 +10,7 @@ public class PowerUp extends GameObject{
 	}
 
 	public void update() {
-		
+		getBounds().y+=5;
 	}
 	
 	//draw the image represented by the alien

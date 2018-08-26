@@ -12,17 +12,20 @@ import java.io.*;
 public class GameScreen extends Screen
 {
 	//variables that represent the different GameObjects in the game
+	private Image img = ImageLoader.loadCompatibleImage("sprites/explosion.png");
 	private ArrayList<Alien> aliens;
 	private ArrayList<Laser> lasers;
 	private Player player;
 	private ArrayList<PowerUp> powerups;
-	private int powerUpCountDown = (int) (Math.random() + 30) * 140;
+	private int powerUpCountDown = 30;
 	private int alienDamageCounter;
 	private int playerDamageCounter;
 	static int lives = 3;
 	private int score;
 	private int[] randomNums;
 	private int timer = 0;
+	int x = 20;
+	int y = 100;
 	private boolean[] dead;
 	private int pos = 0;
 	Sound killInvader = new Sound("invaderkilled.wav");
@@ -43,14 +46,10 @@ public class GameScreen extends Screen
 	//initialize our variables before the next game begins
 	public void initGame() {
 		song.play();
-		int x = 20;
-		int y = 100;
+		
 		aliens = new ArrayList<Alien>();
-
 		lasers = new ArrayList<Laser>();
-
 		powerups = new ArrayList<PowerUp>();
-
 		player = new Player(width/2 - 23, height - 24, 45, 24);
 
 		for(int outer = 0; outer < 5; outer++) {
@@ -97,10 +96,13 @@ public class GameScreen extends Screen
 	public void gameWon(Graphics2D g) {
 		g.drawString("You Won!", 30, 40);
 	}
+	public void drawImage(Graphics2D g, Image image, int x, int y, int height, int width) {
+		g.drawImage(img, x, y, (int)aliens.get(5).getBounds().height, (int)aliens.get(5).getBounds().width, null);
+	}
 
 	//update all the game objects in the game
 	public void update() {
-		
+		powerUpCountDown--;
 		if(!song.isPlaying()) {
 			song.play();
 		}
@@ -170,8 +172,8 @@ public class GameScreen extends Screen
 		}
 
 		if(powerUpCountDown <= 0) {
-			powerUpCountDown = (int) (Math.random() + 30) * 140;
-			PowerUp powerup = new PowerUp(30,40, 4, 12 );
+			powerUpCountDown = 30;
+			PowerUp powerup = new PowerUp(30,300, 4, 12 );
 			powerups.add(powerup);
 		}
 
@@ -186,10 +188,6 @@ public class GameScreen extends Screen
 
 
 		pos++;
-		System.out.println(pos);
-		System.out.println(dead[pos]);
-		System.out.println("alienBound: " + aliens.get(pos).getBounds().y);
-		System.out.println("playerBound: " + player.getBounds().height);
 		if(dead[pos] == true) {
 		}
 		
