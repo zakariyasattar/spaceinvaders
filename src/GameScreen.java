@@ -64,7 +64,7 @@ public class GameScreen extends Screen
 		randomNums = new int[aliens.size()];
 		dead = new boolean[aliens.size() - 1];
 		for(int j = 0; j < 3; j++) {
-			int k = (int) ((Math.random() + 0) * 10);
+			int k = (int) ((Math.random() + 0) * 34);
 			if(dead[k] == true) {
 				continue;
 			}
@@ -113,7 +113,7 @@ public class GameScreen extends Screen
 			}
 			Alien a = aliens.get(i);
 			a.update();
-			if(randomNums[timer] < aliens.size()) {
+			if(randomNums[i] < aliens.size()) {
 				a = aliens.get(randomNums[i]);
 			}
 			Laser l = a.shoot();
@@ -131,26 +131,24 @@ public class GameScreen extends Screen
 			Laser laser = lasers.get(k);
 			for(int l = 0; l < aliens.size(); l++) {
 				Alien alien = aliens.get(l);
+				
 				if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
 					lasers.remove(k);
 					killInvader.play();
-					score++;
 					alienDamageCounter++;
-					if(alienDamageCounter == 3) {
+					if(alienDamageCounter == 3 && score == 35) {
 						state.switchToWinScreen();
 						explosion.play();
 					}
 					break;
 				}
+				
 				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
 					lasers.remove(k);
 					score++;
 					killInvader.play();
 					aliens.remove(l);
 					dead[l] = true;
-					if(score == 35) {
-						state.switchToWinScreen();
-					}
 					break;
 				}
 
@@ -173,7 +171,7 @@ public class GameScreen extends Screen
 
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = 30;
-			PowerUp powerup = new PowerUp(30,300, 4, 12 );
+			PowerUp powerup = new PowerUp(300,  300, 4, 12);
 			powerups.add(powerup);
 		}
 

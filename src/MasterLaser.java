@@ -1,15 +1,13 @@
 import java.awt.*;
 import java.awt.geom.*;
-import java.awt.image.BufferedImage;
 
-public class Laser extends GameObject {
+public class MasterLaser extends GameObject {
 
-    private Image image = ImageLoader.loadCompatibleImage("sprites/playerLaser.png");
     private Image master = ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser2.png");
     private int direction = -1;
-    BufferedImage img;
+    Image img;
 
-	public Laser(int x, int y, int w, int h, int direction, BufferedImage img) {
+	public MasterLaser(int x, int y, int w, int h, int direction, Image img) {
         super(x, y, w, h);
         this.direction = direction;
         this.img = img;
@@ -30,7 +28,7 @@ public class Laser extends GameObject {
     //draw the image represented by the alien
 	public void render(Graphics2D g) {
 
-		g.drawImage(img,
+		g.drawImage(master,
                     (int)getBounds().x,
                     (int)getBounds().y,
                     (int)getBounds().width,

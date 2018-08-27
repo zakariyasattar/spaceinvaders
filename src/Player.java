@@ -8,7 +8,7 @@ import java.awt.geom.*;
 public class Player extends GameObject {
 
     //the image used for the player
-    private Image image = ImageLoader.loadCompatibleImage("sprites/player.png");
+    private Image image = ImageLoader.loadCompatibleImage("sprites/baseshipb.ico");
     
     //keeps track of whether the player is moving to the left
     private boolean movingLeft = false;
@@ -51,7 +51,7 @@ public class Player extends GameObject {
     	if(shootCountDown <= 0) {
     		shootCountDown = 60;
     		getBounds().y++;
-    		return new Laser((int)getBounds().x + (int)getBounds().width - (int)getBounds().width/2, (int) getBounds().y--, 4, 12, 1);
+    		return new Laser((int)getBounds().x + (int)getBounds().width - (int)getBounds().width/2, (int) getBounds().y--, 4, 12, 1, ImageLoader.loadCompatibleImage("sprites/playerLaser.png"));
     	}
     	return null;
     }

@@ -32,14 +32,14 @@ public class Alien extends GameObject {
         	getBounds().x += 0.5;
         	if(getBounds().x == 755) {
         		edge = true;
-        		getBounds().y += getBounds().height*2;
+        		getBounds().y += getBounds().height*3;
         	}
         }
         else if(getBounds().x > 0 && edge == true) {
         	getBounds().x -= 0.5;
         	if(getBounds().x == 0) {
         		edge = false;
-        		getBounds().y += getBounds().height*2;
+        		getBounds().y += getBounds().height*3;
         	}
         }
         
@@ -52,7 +52,7 @@ public class Alien extends GameObject {
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
 			shootCountDown = (int) ((Math.random() + 0) * 240);
-			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1);
+			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png"));
 		}
 		else
 			return null;

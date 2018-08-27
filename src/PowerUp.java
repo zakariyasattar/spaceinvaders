@@ -3,14 +3,14 @@ import java.awt.geom.*;
 
 public class PowerUp extends GameObject{
 
-	private Image image = ImageLoader.loadCompatibleImage("sprites/playerLaser.png");
+	private Image image = ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png");
 
 	public PowerUp(int x, int y, int w, int h) {
 		super(x, y, w, h);
 	}
 
 	public void update() {
-		getBounds().y+=5;
+		getBounds().y+=1;
 	}
 	
 	//draw the image represented by the alien
