@@ -3,7 +3,7 @@ import java.awt.geom.*;
 
 public class PowerUp extends GameObject{
 
-	private Image image = ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png");
+	private Image image = ImageLoader.loadCompatibleImage("sprites/powerup.png");
 
 	public PowerUp(int x, int y, int w, int h) {
 		super(x, y, w, h);

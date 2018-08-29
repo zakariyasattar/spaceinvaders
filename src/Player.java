@@ -8,7 +8,7 @@ import java.awt.geom.*;
 public class Player extends GameObject {
 
     //the image used for the player
-    private Image image = ImageLoader.loadCompatibleImage("sprites/baseshipb.ico");
+    private Image image = ImageLoader.loadCompatibleImage("sprites/player.png");
     
     //keeps track of whether the player is moving to the left
     private boolean movingLeft = false;

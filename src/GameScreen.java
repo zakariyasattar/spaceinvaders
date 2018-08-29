@@ -52,6 +52,8 @@ public class GameScreen extends Screen
 		powerups = new ArrayList<PowerUp>();
 		player = new Player(width/2 - 23, height - 24, 45, 24);
 
+		 
+		
 		for(int outer = 0; outer < 5; outer++) {
 			y += 35;
 			for(int inner = 0; inner < 7; inner++) {
@@ -84,6 +86,10 @@ public class GameScreen extends Screen
 		for(Alien a: aliens) {
 			a.render(g);
 		}
+		for(PowerUp p : powerups) {
+			p.render(g);
+		}
+		
 		player.render(g);
 
 		g.setFont(new Font("Playbill", Font.BOLD, 20));
@@ -171,15 +177,14 @@ public class GameScreen extends Screen
 
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = 30;
-			PowerUp powerup = new PowerUp(300,  300, 4, 12);
-			powerups.add(powerup);
+			powerups.add(new PowerUp(300,  300, 100, 100));
 		}
 
-		for(int i = powerups.size() - 1; i > 0; i--) {
-			PowerUp powerup = powerups.get(i);
+		for(int a = powerups.size() - 1; a > 0; a--) {
+			PowerUp powerup = powerups.get(a);
 			powerup.update();
 			if(player.intersects(powerup)) { 
-				powerups.remove(i);
+				powerups.remove(a);
 				lives++;
 			}
 		}
