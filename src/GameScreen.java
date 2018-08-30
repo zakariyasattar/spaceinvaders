@@ -17,7 +17,7 @@ public class GameScreen extends Screen
 	private ArrayList<Laser> lasers;
 	private Player player;
 	private ArrayList<PowerUp> powerups;
-	private int powerUpCountDown = 30;
+	private int powerUpCountDown = (int) (Math.random() * 1000) + 500;
 	private int alienDamageCounter;
 	private int playerDamageCounter;
 	static int lives = 3;
@@ -46,14 +46,14 @@ public class GameScreen extends Screen
 	//initialize our variables before the next game begins
 	public void initGame() {
 		song.play();
-		
+
 		aliens = new ArrayList<Alien>();
 		lasers = new ArrayList<Laser>();
 		powerups = new ArrayList<PowerUp>();
 		player = new Player(width/2 - 23, height - 24, 45, 24);
 
-		 
-		
+
+
 		for(int outer = 0; outer < 5; outer++) {
 			y += 35;
 			for(int inner = 0; inner < 7; inner++) {
@@ -89,7 +89,7 @@ public class GameScreen extends Screen
 		for(PowerUp p : powerups) {
 			p.render(g);
 		}
-		
+
 		player.render(g);
 
 		g.setFont(new Font("Playbill", Font.BOLD, 20));
@@ -133,11 +133,11 @@ public class GameScreen extends Screen
 			l.update();
 		}
 
-		for(int k = lasers.size() - 1; k > 0; k--) {
+		for(int k = lasers.size() - 1; k >= 0; k--) {
 			Laser laser = lasers.get(k);
 			for(int l = 0; l < aliens.size(); l++) {
 				Alien alien = aliens.get(l);
-				
+
 				if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
 					lasers.remove(k);
 					killInvader.play();
@@ -148,7 +148,7 @@ public class GameScreen extends Screen
 					}
 					break;
 				}
-				
+
 				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
 					lasers.remove(k);
 					score++;
@@ -156,6 +156,10 @@ public class GameScreen extends Screen
 					aliens.remove(l);
 					dead[l] = true;
 					break;
+				}
+
+				if(player.intersects(alien)) {
+					state.switchToGameOverScreen();
 				}
 
 
@@ -173,14 +177,18 @@ public class GameScreen extends Screen
 				}
 				break;
 			}
+
+
 		}
 
 		if(powerUpCountDown <= 0) {
-			powerUpCountDown = 30;
-			powerups.add(new PowerUp(300,  300, 100, 100));
+			powerUpCountDown = (int) (Math.random() * 1000) + 500;
+			int randX = (int) (Math.random() * 730) + 20;
+			int randY = (int) (Math.random() * 600) + 20;
+			powerups.add(new PowerUp(randX,  randY, 20, 20));
 		}
 
-		for(int a = powerups.size() - 1; a > 0; a--) {
+		for(int a = powerups.size() - 1; a >= 0; a--) {
 			PowerUp powerup = powerups.get(a);
 			powerup.update();
 			if(player.intersects(powerup)) { 
@@ -193,13 +201,13 @@ public class GameScreen extends Screen
 		pos++;
 		if(dead[pos] == true) {
 		}
-		
+
 		else {
 			if(dead[pos] == false && aliens.get(pos).getBounds().y == player.getBounds().height) {
-				
+
 				gameOver();
 			}
-			
+
 		}
 		pos = 0;
 		player.update();
@@ -217,7 +225,7 @@ public class GameScreen extends Screen
 		else if(code == KeyEvent.VK_RIGHT)
 			player.setMovingRight(true);
 		else if(code == KeyEvent.VK_SPACE) {
-			
+
 			Laser l  = player.shoot();
 			if(l != null) {
 				lasers.add(l);

@@ -10,6 +10,7 @@ public class GameState
 		screens.add(new GameScreen(this, width, height));
         screens.add(new GameOverScreen(this, width, height));
         screens.add(new WinScreen(this, width, height));
+        screens.add(new InstructionScreen(this, width, height));
 	}
 	
 	public Screen currentActiveScreen() {
@@ -34,6 +35,9 @@ public class GameState
     public void switchToWinScreen() {
 		indexOfCurrentScreen = 3;		
 	}
+    public void switchToInstructionScreen() {
+    	indexOfCurrentScreen = 4;
+    }
 	
 	public boolean isWelcomeScreen() {
 		return indexOfCurrentScreen == 0;

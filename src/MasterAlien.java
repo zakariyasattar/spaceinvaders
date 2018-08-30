@@ -40,8 +40,8 @@ public class MasterAlien extends Alien{
 				getBounds().y += getBounds().height*3;
 			}
 		}
-		
-	
+
+
 
 
 		if(shootCountDown > 0) {

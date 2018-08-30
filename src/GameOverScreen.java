@@ -14,14 +14,14 @@ public class GameOverScreen extends Screen
 	}
 
 	public void render(Graphics2D g) {
-		g.setFont(new Font("Playbill", Font.BOLD, 60));
+		g.setFont(new Font("Circular", Font.BOLD, 60));
 		g.setColor(Color.red);
 
 		g.drawString("Game Over", 220, 175);
-		
-		g.setFont(new Font("Playbill", Font.BOLD, 30));
+
+		g.setFont(new Font("Circular", Font.BOLD, 30));
 		g.setColor(Color.white);
-		
+
 		g.drawString("Play Again", 275, 400);
 		g.drawString("Quit", 275, 450);
 	}
@@ -34,26 +34,26 @@ public class GameOverScreen extends Screen
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_ENTER)
 			GameScreen.lives = 3;
-			state.switchToWelcomeScreen();
+		state.switchToWelcomeScreen();
 	}
 
 	public void keyReleased(KeyEvent e){
-		
+
 	}
 	public void mousePressed(Point2D p)
 	{
-		
+
 	}
 	public void mouseReleased(Point2D p)
 	{
-		
+
 	}
 	public void mouseMoved(Point2D p)
 	{
-		
+
 	}
 	public void mouseDragged(Point2D p)
 	{
-		 
+
 	}
 }
