@@ -142,7 +142,7 @@ public class GameScreen extends Screen
 					lasers.remove(k);
 					killInvader.play();
 					alienDamageCounter++;
-					if(alienDamageCounter == 3 && score == 35) {
+					if(alienDamageCounter >= 3 && score == 35) {
 						state.switchToWinScreen();
 						explosion.play();
 					}
