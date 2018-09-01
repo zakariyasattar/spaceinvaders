@@ -16,7 +16,7 @@ public class MasterAlien extends Alien{
 	private boolean master = true;
 
 	public MasterAlien(int x, int y, int w, int h, boolean master) {
-		super(x, y, w, h, master);
+		super(x, y, w, h, master, false);
 	}
 
 	public void update() {
@@ -55,7 +55,7 @@ public class MasterAlien extends Alien{
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
 			shootCountDown = (int) ((Math.random() + 0) * 240);
-			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/masterLaser.png"));
+			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/masterLaser.png"), true);
 		}
 		else
 			return null;

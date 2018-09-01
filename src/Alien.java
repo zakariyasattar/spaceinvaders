@@ -4,6 +4,7 @@
 
 import java.awt.*;
 import java.awt.geom.*;
+import java.awt.image.BufferedImage;
 
 public class Alien extends GameObject {
 
@@ -12,20 +13,29 @@ public class Alien extends GameObject {
 	private int shootCountDown = (int) ((Math.random() + 1) * 240);
 	boolean edge = false;
 	private boolean master = false;
+	boolean explosion = false;
 	private int timer = 0;
+	int explodeCounter = 0;
 
-	public Alien(int x, int y, int w, int h, boolean master) {
+	public Alien(int x, int y, int w, int h, boolean master, boolean explosion) {
 		super(x, y, w, h);
 		master = false;
+		this.explosion = explosion;
 	}
 	public boolean isMaster() {
 		return master;
 	}
+	public boolean canExplode() {
+		return explosion;
+	}
+	
 
 	public void update() {
 
 		//keep track of how many times this Alien has been updated
 		updateCounter++;
+		explodeCounter++;
+		
 
 		
 		if(timer == 20)
@@ -35,8 +45,6 @@ public class Alien extends GameObject {
 			timer = 0;
 			image = ImageLoader.loadCompatibleImage("sprites/alienA1.png");
 		}
-		
-		//every 120th update, move the bounds of the alien half it's width to the right
 
 		if(getBounds().x < 755 && edge == false) {
 			getBounds().x += 0.5;
@@ -53,31 +61,44 @@ public class Alien extends GameObject {
 			}
 		}
 
-
 		if(shootCountDown > 0) {
 			shootCountDown--;
 		}
+		
 
 	}
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
 			shootCountDown = (int) ((Math.random() + 1) * 240);
-			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png"));
+			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png"), false);
 		}
 		else
 			return null;
+	}
+	
+	public void setImage(Image img) {
+		image = img;
 	}
 
 
 	//draw the image represented by the alien
 	public void render(Graphics2D g) {
-
-		g.drawImage(image,
-				(int)getBounds().x,
-				(int)getBounds().y,
-				(int)getBounds().width,
-				(int)getBounds().height,
-				null);
+		if(explosion) {
+			g.drawImage(ImageLoader.loadCompatibleImage("sprites/explosion.png"),
+					(int)getBounds().x,
+					(int)getBounds().y,
+					(int)getBounds().width,
+					(int)getBounds().height,
+					null);
+		}
+		else {
+			g.drawImage(image,
+					(int)getBounds().x,
+					(int)getBounds().y,
+					(int)getBounds().width,
+					(int)getBounds().height,
+					null);
+		}
 
 	}
 

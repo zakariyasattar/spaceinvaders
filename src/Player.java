@@ -51,7 +51,7 @@ public class Player extends GameObject {
     	if(shootCountDown <= 0) {
     		shootCountDown = 60;
     		getBounds().y++;
-    		return new Laser((int)getBounds().x + (int)getBounds().width - (int)getBounds().width/2, (int) getBounds().y--, 4, 12, 1, ImageLoader.loadCompatibleImage("sprites/playerLaser.png"));
+    		return new Laser((int)getBounds().x + (int)getBounds().width - (int)getBounds().width/2, (int) getBounds().y--, 4, 12, 1, ImageLoader.loadCompatibleImage("sprites/playerLaser.png"), false);
     	}
     	return null;
     }
