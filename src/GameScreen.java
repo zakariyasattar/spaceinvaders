@@ -116,9 +116,6 @@ public class GameScreen extends Screen
 	public void update() {
 
 		powerUpCountDown--;
-		if(canCount) {
-			explodeTimer++;
-		}
 
 		if(!song.isPlaying()) {
 			song.play();
@@ -172,7 +169,7 @@ public class GameScreen extends Screen
 
 					killInvader.play();
 					if(explodeTimer <= 30) {
-						aliens.set(l, new Alien((int) aliens.get(l).getBounds().x, (int) aliens.get(l).getBounds().y, 37, 31,false, true));
+						aliens.set(l, new Alien((int) aliens.get(l).getBounds().x, (int) aliens.get(l).getBounds().y, 37, 31, false, true));
 
 					}
 					else if(explodeTimer > 30) {
@@ -229,8 +226,7 @@ public class GameScreen extends Screen
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = (int) (Math.random() * 1000) + 500;
 			int randX = (int) (Math.random() * 730) + 20;
-			int randY = (int) (Math.random() * 600) + 400;
-			powerups.add(new PowerUp(randX,  randY, 20, 20));
+			powerups.add(new PowerUp(randX,  20, 20, 20));
 		}
 
 		for(int a = powerups.size() - 1; a >= 0; a--) {
