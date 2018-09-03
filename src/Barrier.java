@@ -4,7 +4,7 @@ import java.awt.geom.*;
 public class Barrier extends GameObject {
 
 	private Image image = ImageLoader.loadCompatibleImage("sprites/barrier.png");
-	private int timer = 0;
+	boolean remove = false;
 	boolean edge = false;
 
 	public Barrier(int x, int y, int w, int h) {
@@ -31,16 +31,24 @@ public class Barrier extends GameObject {
 	public void setImage(Image img) {
 		image = img;
 	}
+	
+	public void remove() {
+		remove = true;
+	}
 
 	//draw the image represented by the alien
 	public void render(Graphics2D g) {
-
-		g.drawImage(image,
-				(int)getBounds().x,
-				(int)getBounds().y,
-				(int)getBounds().width,
-				(int)getBounds().height,
-				null);
+		if(!remove) {
+			g.drawImage(image,
+					(int)getBounds().x,
+					(int)getBounds().y,
+					(int)getBounds().width,
+					(int)getBounds().height,
+					null);
+		}
+		else {
+			System.out.println("hello"); 
+		}
 
 	}
 

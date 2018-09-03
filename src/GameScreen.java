@@ -1,7 +1,3 @@
-/*
-    Screen implementation that models a game
- */
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -32,6 +28,7 @@ public class GameScreen extends Screen
 	private int pos = 0;
 	int explodeTimer = 0;
 	int barrierDamageCounter = 0;
+	boolean canCount = false;
 
 	Sound killInvader = new Sound("invaderkilled.wav");
 	Sound song = new Sound("spaceinvadersmusic.wav");
@@ -52,8 +49,9 @@ public class GameScreen extends Screen
 	public void initGame() {
 		int xPos = 100;
 		song.play();
-
+		
 		barriers = new ArrayList<Barrier>();
+		barriers.add(new Barrier(xPos, 475, 72, 54));
 		aliens = new ArrayList<Alien>();
 		lasers = new ArrayList<Laser>();
 		powerups = new ArrayList<PowerUp>();
@@ -69,20 +67,12 @@ public class GameScreen extends Screen
 			x = 20;
 		}
 
-		for(int j = 0; j < 1; j++) {
-			barriers.add(new Barrier(xPos, 475, 72, 54));
-			xPos+=175;
-		}
-
 		aliens.add(new MasterAlien(185, 75, 37, 25, true));
 		randomNums = new int[aliens.size()];
 		dead = new boolean[aliens.size() - 1];
 		for(int j = 0; j < 3; j++) {
 			int k = (int) ((Math.random() * aliens.size()) + 0);
-			if(dead[k] == true) {
-				continue;
-			}
-			else {
+			if(!dead[k]) {
 				randomNums[j] = k;
 			}
 		}
@@ -94,6 +84,7 @@ public class GameScreen extends Screen
 
 	//render all the game objects in the game
 	public void render(Graphics2D g) {
+
 		for(Laser l : lasers) {
 			l.render(g);
 		}
@@ -123,16 +114,17 @@ public class GameScreen extends Screen
 
 	//update all the game objects in the game
 	public void update() {
+
 		powerUpCountDown--;
-		explodeTimer++;
+		if(canCount) {
+			explodeTimer++;
+		}
 
 		if(!song.isPlaying()) {
 			song.play();
 		}
 
-		for(Barrier b : barriers) {
-			b.update();
-		}
+		
 		for(int i = 0; i < aliens.size(); i++) {
 			timer++;
 			if(timer == 2) {
@@ -174,41 +166,39 @@ public class GameScreen extends Screen
 				}
 
 				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
-					//drawExplosion(null);
+					canCount = true;
 					lasers.remove(k);
 					score++;
 
 					killInvader.play();
-					if(explodeTimer <= 200) {
+					if(explodeTimer <= 30) {
 						aliens.set(l, new Alien((int) aliens.get(l).getBounds().x, (int) aliens.get(l).getBounds().y, 37, 31,false, true));
 
 					}
-					else if(explodeTimer >= 200) {
+					else if(explodeTimer > 30) {
 						explodeTimer = 0;
 						aliens.remove(l);
 					}
 					dead[l] = true;
-
+					canCount = false;
 					break;
 				}
-				
-				for(int i = 0; i < barriers.size(); i++) {
-					if(barriers.get(i).intersects(laser)) {
-						barrierDamageCounter++;
-						if(barrierDamageCounter == 1) {
-							barriers.get(i).setImage(ImageLoader.loadCompatibleImage("sprites/firsthitbarrier.png"));
-						}
-						else if(barrierDamageCounter == 2) {
-							barriers.get(i).setImage(ImageLoader.loadCompatibleImage("sprites/secondhitbarrier.png"));
-						}
-						else if(barrierDamageCounter == 3) {
-							barriers.remove(i);
-						}
+			}
+
+			for(int b = 0; b < barriers.size(); b++) {
+				Barrier barrier = barriers.get(b);
+				if(barrier.intersects(laser)) {
+					lasers.remove(k);
+					barrierDamageCounter++;
+					if(barrierDamageCounter == 1) {
+						barrier.setImage(ImageLoader.loadCompatibleImage("sprites/firsthitbarrier.png"));
 					}
-					if(barriers.get(i).intersects(alien)) {
-						state.switchToGameOverScreen();
+					else if(barrierDamageCounter == 2) {
+						barrier.setImage(ImageLoader.loadCompatibleImage("sprites/secondhitbarrier.png"));
 					}
-					
+					else if(barrierDamageCounter == 3) {
+						barriers.remove(b);
+					}
 				}
 			}
 
@@ -239,7 +229,7 @@ public class GameScreen extends Screen
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = (int) (Math.random() * 1000) + 500;
 			int randX = (int) (Math.random() * 730) + 20;
-			int randY = (int) (Math.random() * 600) + 20;
+			int randY = (int) (Math.random() * 600) + 400;
 			powerups.add(new PowerUp(randX,  randY, 20, 20));
 		}
 
@@ -263,6 +253,10 @@ public class GameScreen extends Screen
 				gameOver();
 			}
 
+		}
+		
+		for(int b = 0; b < barriers.size(); b++) {
+			barriers.get(b).update();
 		}
 		pos = 0;
 		player.update();
