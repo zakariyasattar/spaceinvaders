@@ -34,7 +34,6 @@ public class GameOverScreen extends Screen
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_ENTER) {
 			GameScreen.lives = 3;
-			GameScreen.barrierDamageCounter = 0;
 			state.switchToGameScreen();
 		}
 		else if(code == KeyEvent.VK_Q) {

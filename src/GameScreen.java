@@ -12,6 +12,7 @@ public class GameScreen extends Screen
 	private ArrayList<Alien> aliens;
 	private ArrayList<Laser> lasers;
 	private ArrayList<Barrier> barriers;
+	private ArrayList<Integer> barrierDamage;
 	private Player player;
 	private ArrayList<PowerUp> powerups;
 	private int powerUpCountDown = (int) (Math.random() * 1000) + 500;
@@ -27,7 +28,6 @@ public class GameScreen extends Screen
 	private boolean[] dead;
 	private int pos = 0;
 	int explodeTimer = 0;
-	public static int barrierDamageCounter = 0;
 	boolean canCount = false;
 
 	Sound killInvader = new Sound("invaderkilled.wav");
@@ -49,9 +49,17 @@ public class GameScreen extends Screen
 	public void initGame() {
 		int xPos = 100;
 		song.play();
-
+		
+		barrierDamage = new ArrayList<Integer>();
+		barrierDamage.add(0);
+		barrierDamage.add(0);
+		barrierDamage.add(0);
+		barrierDamage.add(0);
 		barriers = new ArrayList<Barrier>();
-		barriers.add(new Barrier(xPos, 475, 72, 54));
+		barriers.add(new Barrier(xPos, 475, 72, 54, 2));
+		barriers.add(new Barrier(xPos + 200, 475, 72, 54, 1));
+		barriers.add(new Barrier(xPos - 200, 475, 72, 54, 3));
+		barriers.add(new Barrier(xPos - 400, 475, 72, 54, 4));
 		aliens = new ArrayList<Alien>();
 		lasers = new ArrayList<Laser>();
 		powerups = new ArrayList<PowerUp>();
@@ -179,24 +187,24 @@ public class GameScreen extends Screen
 						aliens.remove(l);
 					}
 					dead[l] = true;
-					canCount = false;
 					break;
 				}
 			}
 
-			for(int b = 0; b < barriers.size(); b++) {
+			for(int b = barriers.size() - 1; b >= 0; b--) {
 				Barrier barrier = barriers.get(b);
 				if(barrier.intersects(laser)) {
 					lasers.remove(k);
-					barrierDamageCounter++;
-					if(barrierDamageCounter == 1) {
+					barrierDamage.set(b, barrierDamage.get(b)+1);
+					if(barrierDamage.get(b) == 1) {
 						barrier.setImage(ImageLoader.loadCompatibleImage("sprites/firsthitbarrier.png"));
 					}
-					else if(barrierDamageCounter == 2) {
+					else if(barrierDamage.get(b) == 2) {
 						barrier.setImage(ImageLoader.loadCompatibleImage("sprites/secondhitbarrier.png"));
 					}
-					else if(barrierDamageCounter == 3) {
+					else if(barrierDamage.get(b) == 3) {
 						barriers.remove(b);
+						barrierDamage.remove(b);
 					}
 				}
 			}
