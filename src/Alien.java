@@ -10,7 +10,7 @@ public class Alien extends GameObject {
 
 	private Image image = ImageLoader.loadCompatibleImage("sprites/alienA1.png");
 	private int updateCounter = 0;
-	private int shootCountDown = (int) ((Math.random() + 1) * 240);
+	private int shootCountDown = (int) ((Math.random() * 240) + 1);
 	boolean edge = false;
 	private boolean master = false;
 	boolean explosion = false;
@@ -50,14 +50,14 @@ public class Alien extends GameObject {
 			getBounds().x += 0.5;
 			if(getBounds().x == 755) {
 				edge = true;
-				getBounds().y += getBounds().height*3;
+				getBounds().y += getBounds().height*1.125;
 			}
 		}
 		else if(getBounds().x > 0 && edge == true) {
 			getBounds().x -= 0.5;
 			if(getBounds().x == 0) {
 				edge = false;
-				getBounds().y += getBounds().height*3;
+				getBounds().y += getBounds().height*1.125;
 			}
 		}
 
@@ -83,22 +83,13 @@ public class Alien extends GameObject {
 
 	//draw the image represented by the alien
 	public void render(Graphics2D g) {
-		if(explosion) {
-			g.drawImage(ImageLoader.loadCompatibleImage("sprites/explosion.png"),
-					(int)getBounds().x,
-					(int)getBounds().y,
-					(int)getBounds().width,
-					(int)getBounds().height,
-					null);
-		}
-		else {
 			g.drawImage(image,
 					(int)getBounds().x,
 					(int)getBounds().y,
 					(int)getBounds().width,
 					(int)getBounds().height,
 					null);
-		}
+		
 
 	}
 

@@ -22,8 +22,8 @@ public class GameOverScreen extends Screen
 		g.setFont(new Font("Circular", Font.BOLD, 30));
 		g.setColor(Color.white);
 
-		g.drawString("Play Again", 275, 400);
-		g.drawString("Quit", 275, 450);
+		g.drawString("Play Again (Press Enter)", 275, 400);
+		g.drawString("Quit (Press Q)", 275, 450);
 	}
 
 	public void update() {
@@ -32,9 +32,15 @@ public class GameOverScreen extends Screen
 	public void keyPressed(KeyEvent e)
 	{
 		int code = e.getKeyCode();
-		if(code == KeyEvent.VK_ENTER)
+		if(code == KeyEvent.VK_ENTER) {
 			GameScreen.lives = 3;
-		state.switchToWelcomeScreen();
+			GameScreen.barrierDamageCounter = 0;
+			state.switchToGameScreen();
+		}
+		else if(code == KeyEvent.VK_Q) {
+			System.exit(0);
+		}
+		
 	}
 
 	public void keyReleased(KeyEvent e){

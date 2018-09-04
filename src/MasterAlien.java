@@ -11,7 +11,7 @@ public class MasterAlien extends Alien{
 
 	private Image image = ImageLoader.loadCompatibleImage("sprites/mysteryShip.png");
 	private int updateCounter = 0;
-	private int shootCountDown = (int) ((Math.random() + 0) * 240);
+	private int shootCountDown = 40;
 	boolean edge = false;
 	private boolean master = true;
 
@@ -30,14 +30,14 @@ public class MasterAlien extends Alien{
 			getBounds().x += 0.5;
 			if(getBounds().x == 755) {
 				edge = true;
-				getBounds().y += getBounds().height*3;
+				getBounds().y += getBounds().height*1.125;
 			}
 		}
 		else if(getBounds().x > 0 && edge == true) {
 			getBounds().x -= 0.5;
 			if(getBounds().x == 0) {
 				edge = false;
-				getBounds().y += getBounds().height*3;
+				getBounds().y += getBounds().height*1.125;
 			}
 		}
 
@@ -50,12 +50,12 @@ public class MasterAlien extends Alien{
 
 	}
 	public boolean isMaster() {
-		return master;
+		return true;
 	}
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
-			shootCountDown = (int) ((Math.random() + 0) * 240);
-			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/masterLaser.png"), true);
+			shootCountDown = 40;
+			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 16, 12, -1, ImageLoader.loadCompatibleImage("sprites/masterLaser.png"), true);
 		}
 		else
 			return null;

@@ -9,6 +9,7 @@ public class Laser extends GameObject {
     private int direction = -1;
     private boolean masterLaser;
     BufferedImage img;
+    private int speed = 5;
 
 	public Laser(int x, int y, int w, int h, int direction, BufferedImage img, boolean master) {
         super(x, y, w, h);
@@ -19,10 +20,10 @@ public class Laser extends GameObject {
 
 	public void update() {
 		if(direction == -1) {
-			getBounds().y+=5;
+			getBounds().y+=speed;
 		}
 		if(direction == 1) {
-			getBounds().y-=5;
+			getBounds().y-=speed;
 			
 		}
     }
@@ -31,6 +32,9 @@ public class Laser extends GameObject {
 	}
 	public boolean isMaster() {
 		return masterLaser;
+	}
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
     //draw the image represented by the alien
 	public void render(Graphics2D g) {

@@ -22,7 +22,7 @@ public class WelcomeScreen extends Screen
 		g.drawImage(img, width/2 - img.getWidth(null)/2, height/2 - img.getHeight(null)/2, null);
 
 		//set the drawing font and color
-		g.setFont(new Font("Geneva", Font.BOLD, 42));
+		g.setFont(new Font("Circular", Font.BOLD, 42));
 		g.setColor(Color.magenta);
 
 		//draw a message

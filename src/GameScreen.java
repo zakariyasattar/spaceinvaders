@@ -20,14 +20,14 @@ public class GameScreen extends Screen
 	static int lives = 3;
 	private int score;
 	private int[] randomNums;
-	private int jCount = 0;
 	private int timer = 0;
 	int x = 20;
-	int y = 100;
+	int y = 80;
+	private int jCount = 0;
 	private boolean[] dead;
 	private int pos = 0;
 	int explodeTimer = 0;
-	int barrierDamageCounter = 0;
+	public static int barrierDamageCounter = 0;
 	boolean canCount = false;
 
 	Sound killInvader = new Sound("invaderkilled.wav");
@@ -49,7 +49,7 @@ public class GameScreen extends Screen
 	public void initGame() {
 		int xPos = 100;
 		song.play();
-		
+
 		barriers = new ArrayList<Barrier>();
 		barriers.add(new Barrier(xPos, 475, 72, 54));
 		aliens = new ArrayList<Alien>();
@@ -59,7 +59,7 @@ public class GameScreen extends Screen
 
 
 		for(int outer = 0; outer < 5; outer++) {
-			y += 50;
+			y += 55;
 			for(int inner = 0; inner < 7; inner++) {
 				aliens.add(new Alien(x, y, 37, 25, false, false));
 				x+=55;
@@ -69,9 +69,9 @@ public class GameScreen extends Screen
 
 		aliens.add(new MasterAlien(185, 75, 37, 25, true));
 		randomNums = new int[aliens.size()];
-		dead = new boolean[aliens.size() - 1];
+		dead = new boolean[aliens.size()];
 		for(int j = 0; j < 3; j++) {
-			int k = (int) ((Math.random() * aliens.size()) + 0);
+			int k = (int) (Math.random() * aliens.size()) + 0;
 			if(!dead[k]) {
 				randomNums[j] = k;
 			}
@@ -79,7 +79,8 @@ public class GameScreen extends Screen
 		score = 0;
 
 		x = 20;
-		y = 100;
+		y = 80;
+		//barrierDamageCounter++;
 	}
 
 	//render all the game objects in the game
@@ -107,21 +108,17 @@ public class GameScreen extends Screen
 		g.drawString("lives:  " + lives, 660, 75);
 	}
 
-	public void gameWon(Graphics2D g) {
-		g.drawString("You Won!", 30, 40);
-	}
-
 
 	//update all the game objects in the game
 	public void update() {
-
+		explodeTimer++;
 		powerUpCountDown--;
 
 		if(!song.isPlaying()) {
 			song.play();
 		}
 
-		
+
 		for(int i = 0; i < aliens.size(); i++) {
 			timer++;
 			if(timer == 2) {
@@ -131,10 +128,11 @@ public class GameScreen extends Screen
 			a.update();
 			if(randomNums[i] < aliens.size()) {
 				a = aliens.get(randomNums[i]);
+				Laser l = a.shoot();
+				if(l !=null)
+					lasers.add(l);
 			}
-			Laser l = a.shoot();
-			if(l!=null)
-				lasers.add(l);
+
 
 		}
 
@@ -148,6 +146,10 @@ public class GameScreen extends Screen
 			for(int l = 0; l < aliens.size(); l++) {
 				Alien alien = aliens.get(l);
 				jCount = l;
+
+				if(score >= 35) {
+					laser.setSpeed(8);
+				}
 
 				if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
 					lasers.remove(k);
@@ -168,11 +170,11 @@ public class GameScreen extends Screen
 					score++;
 
 					killInvader.play();
-					if(explodeTimer <= 30) {
+					if(explodeTimer < 20) {
 						aliens.set(l, new Alien((int) aliens.get(l).getBounds().x, (int) aliens.get(l).getBounds().y, 37, 31, false, true));
 
 					}
-					else if(explodeTimer > 30) {
+					else if(explodeTimer > 40) {
 						explodeTimer = 0;
 						aliens.remove(l);
 					}
@@ -198,30 +200,31 @@ public class GameScreen extends Screen
 					}
 				}
 			}
-
-			if(player.intersects(laser) && laser.getDirection() == -1) { 
-				playerDamageCounter++;
-				lasers.remove(laser);
-				if(playerDamageCounter >= 1) {
-					lives--; 
-					playerDamageCounter = 0;
-					if(lives == 0) {
-						gameOver();
-					}
-				}
-				break;
-			}
-			if(player.intersects(laser) && laser.getDirection() == -1 && laser.isMaster() == true) { 
-				lives-=2;
-				lasers.remove(laser);
-				if(lives == 0) {
+			if(player.intersects(laser) && laser.getDirection() == -1 && laser.isMaster()) { 
+				lives -= 2;
+				lasers.remove(k);
+				if(lives <= 0) {
 					gameOver();
 				}
 				break;
 			}
 
+			else if(player.intersects(laser) && laser.getDirection() == -1) { 
+				playerDamageCounter++;
+				lasers.remove(laser);
+				if(playerDamageCounter >= 1) {
+					lives--; 
+					playerDamageCounter = 0;
+					if(lives <= 0) {
+						gameOver();
+					}
+				}
+				break;
+			}
 
 		}
+
+
 
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = (int) (Math.random() * 1000) + 500;
@@ -250,7 +253,7 @@ public class GameScreen extends Screen
 			}
 
 		}
-		
+
 		for(int b = 0; b < barriers.size(); b++) {
 			barriers.get(b).update();
 		}

@@ -12,11 +12,10 @@ public class Barrier extends GameObject {
 	}
 
 	public void update() {
-		if(getBounds().x < 755 && edge == false) {
+		if(getBounds().x < 730 && edge == false) {
 			getBounds().x += 1;
-			if(getBounds().x == 755) {
+			if(getBounds().x == 730 ) {
 				edge = true;
-				getBounds().x -= 1;
 			}
 		}
 		else if(getBounds().x > 0 && edge == true) {
@@ -27,29 +26,23 @@ public class Barrier extends GameObject {
 			}
 		}
 	}
-	
+
 	public void setImage(Image img) {
 		image = img;
 	}
-	
+
 	public void remove() {
 		remove = true;
 	}
 
 	//draw the image represented by the alien
 	public void render(Graphics2D g) {
-		if(!remove) {
-			g.drawImage(image,
-					(int)getBounds().x,
-					(int)getBounds().y,
-					(int)getBounds().width,
-					(int)getBounds().height,
-					null);
-		}
-		else {
-			System.out.println("hello"); 
-		}
-
+		g.drawImage(image,
+				(int)getBounds().x,
+				(int)getBounds().y,
+				(int)getBounds().width,
+				(int)getBounds().height,
+				null);
 	}
 
 }
