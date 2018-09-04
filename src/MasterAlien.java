@@ -55,7 +55,7 @@ public class MasterAlien extends Alien{
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
 			shootCountDown = 400;
-			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 8, 12, -1, ImageLoader.loadCompatibleImage("sprites/masterLaser.png"), true);
+			return new Laser((int)getBounds().x--, (int)(getBounds().height+getBounds().y), 6, 12, -1, ImageLoader.loadCompatibleImage("sprites/masterLaser.png"), true);
 		}
 		else
 			return null;

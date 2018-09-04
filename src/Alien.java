@@ -10,12 +10,15 @@ public class Alien extends GameObject {
 
 	private Image image = ImageLoader.loadCompatibleImage("sprites/alienA1.png");
 	private int updateCounter = 0;
-	private int shootCountDown = (int) ((Math.random() * 240) + 1);
+	private int shootCountDown = (int) ((Math.random() * 240) + 30);
 	boolean edge = false;
 	private boolean master = false;
 	boolean explosion = false;
+	int alienPos = 0;
 	private int timer = 0;
+	int explodeTimer = 0;
 	int explodeCounter = 0;
+	public static boolean shouldRemove = false;
 
 	public Alien(int x, int y, int w, int h, boolean master, boolean explosion) {
 		super(x, y, w, h);
@@ -25,9 +28,7 @@ public class Alien extends GameObject {
 	public boolean isMaster() {
 		return master;
 	}
-	public boolean canExplode() {
-		return explosion;
-	}
+
 	
 
 	public void update() {
@@ -67,9 +68,13 @@ public class Alien extends GameObject {
 		
 
 	}
+	public void setExplode (boolean explode, int pos) {
+		explosion = explode;
+		alienPos = pos;
+	}
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
-			shootCountDown = (int) ((Math.random() + 1) * 240);
+			shootCountDown = (int) ((Math.random() * 240) + 30);
 			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png"), false);
 		}
 		else
@@ -83,12 +88,29 @@ public class Alien extends GameObject {
 
 	//draw the image represented by the alien
 	public void render(Graphics2D g) {
-			g.drawImage(image,
-					(int)getBounds().x,
-					(int)getBounds().y,
-					(int)getBounds().width,
-					(int)getBounds().height,
-					null);
+		if(!explosion) {
+				g.drawImage(image,
+						(int)getBounds().x,
+						(int)getBounds().y,
+						(int)getBounds().width,
+						(int)getBounds().height,
+						null);
+		}
+		else if(explosion){
+			if(explodeTimer != 20) {
+				explodeTimer++;
+				g.drawImage(ImageLoader.loadCompatibleImage("sprites/explosion.png"),
+						(int)getBounds().x,
+						(int)getBounds().y,
+						(int)getBounds().width,
+						(int)getBounds().height,
+						null);
+				
+			}
+			else if(explodeTimer == 20) {
+				shouldRemove = true;
+			}
+		}
 		
 
 	}

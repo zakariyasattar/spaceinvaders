@@ -9,9 +9,9 @@ public class GameScreen extends Screen
 {
 	//variables that represent the different GameObjects in the game
 	private Image img = ImageLoader.loadCompatibleImage("sprites/explosion.png");
-	private ArrayList<Alien> aliens;
+	static ArrayList<Alien> aliens;
 	private ArrayList<Laser> lasers;
-	private ArrayList<Barrier> barriers;
+	public static ArrayList<Barrier> barriers;
 	private ArrayList<Integer> barrierDamage;
 	private Player player;
 	private ArrayList<PowerUp> powerups;
@@ -47,19 +47,11 @@ public class GameScreen extends Screen
 
 	//initialize our variables before the next game begins
 	public void initGame() {
-		int xPos = 100;
+		int xPos = 60;
 		song.play();
 		
-		barrierDamage = new ArrayList<Integer>();
-		barrierDamage.add(0);
-		barrierDamage.add(0);
-		barrierDamage.add(0);
-		barrierDamage.add(0);
 		barriers = new ArrayList<Barrier>();
-		barriers.add(new Barrier(xPos, 475, 72, 54, 2));
-		barriers.add(new Barrier(xPos + 200, 475, 72, 54, 1));
-		barriers.add(new Barrier(xPos - 200, 475, 72, 54, 3));
-		barriers.add(new Barrier(xPos - 400, 475, 72, 54, 4));
+		barrierDamage = new ArrayList<Integer>();
 		aliens = new ArrayList<Alien>();
 		lasers = new ArrayList<Laser>();
 		powerups = new ArrayList<PowerUp>();
@@ -73,6 +65,12 @@ public class GameScreen extends Screen
 				x+=55;
 			}
 			x = 20;
+		}
+		
+		for(int barrier = 0; barrier < 4; barrier++) {
+			barrierDamage.add(0);
+			barriers.add(new Barrier(xPos, 475, 72, 54, 2));
+			xPos+= 200;
 		}
 
 		aliens.add(new MasterAlien(185, 75, 37, 25, true));
@@ -109,17 +107,17 @@ public class GameScreen extends Screen
 
 		player.render(g);
 
-		g.setFont(new Font("Playbill", Font.BOLD, 20));
+		g.setFont(new Font("Circular", Font.BOLD, 20));
 		g.setColor(Color.white);
 
 		g.drawString("score: " + score, 660, 50);
-		g.drawString("lives:  " + lives, 660, 75);
+		g.drawString("lives:   " + lives, 660, 75);
 	}
 
 
 	//update all the game objects in the game
 	public void update() {
-		explodeTimer++;
+
 		powerUpCountDown--;
 
 		if(!song.isPlaying()) {
@@ -172,21 +170,16 @@ public class GameScreen extends Screen
 					break;
 				}
 
-				else if(alien.intersects(laser) && laser.getDirection() == 1) { 
+				else if(alien.intersects(laser) && laser.getDirection() == 1 && !dead[l]) { 
 					canCount = true;
-					lasers.remove(k);
 					score++;
-
 					killInvader.play();
-					if(explodeTimer < 20) {
-						aliens.set(l, new Alien((int) aliens.get(l).getBounds().x, (int) aliens.get(l).getBounds().y, 37, 31, false, true));
-
-					}
-					else if(explodeTimer > 40) {
-						explodeTimer = 0;
-						aliens.remove(l);
-					}
+					alien.setExplode(true, l);
 					dead[l] = true;
+					lasers.remove(k);
+					break;
+				}
+				else if(alien.intersects(laser) && laser.getDirection() == 1 && dead[l]){
 					break;
 				}
 			}

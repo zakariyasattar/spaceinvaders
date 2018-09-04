@@ -14,70 +14,8 @@ public class Barrier extends GameObject {
 	}
 
 	public void update() {
-		if(pos == 1) {
-			if(getBounds().x < 730 && edge == false) {
-				getBounds().x += 1;
-				if(getBounds().x == 730 ) {
-					edge = true;
-				}
-			}
-			else if(getBounds().x > 600 && edge == true) {
-				getBounds().x -= 1;
-				if(getBounds().x == 600) {
-					edge = false;
-					getBounds().x -= 1;
-				}
-			}
-		}
-		
-		else if(pos == 2) {
-			if(getBounds().x < 530 && edge == false) {
-				getBounds().x += 1;
-				if(getBounds().x == 530 ) {
-					edge = true;
-				}
-			}
-			else if(getBounds().x > 400 && edge == true) {
-				getBounds().x -= 1;
-				if(getBounds().x == 400) {
-					edge = false;
-					getBounds().x -= 1;
-				}
-			}
-		}
-		
-		else if(pos == 3) {
-			if(getBounds().x < 330 && edge == false) {
-				getBounds().x += 1;
-				if(getBounds().x == 330 ) {
-					edge = true;
-					getBounds().x -= 1;
-				}
-			}
-			else if(getBounds().x > 200 && edge == true) {
-				getBounds().x -= 1;
-				if(getBounds().x == 200) {
-					edge = false;
-					getBounds().x -= 1;
-				}
-			}
-		}
-		else if(pos == 4) {
-			if(getBounds().x < 130 && edge == false) {
-				getBounds().x += 1;
-				if(getBounds().x == 130 ) {
-					edge = true;
-					getBounds().x -= 1;
-				}
-			}
-			else if(getBounds().x > 0 && edge == true) {
-				getBounds().x -= 1;
-				if(getBounds().x == 0) {
-					edge = false;
-					getBounds().x -= 1;
-				}
-			}
-		}
+
+
 	}
 
 	public void setImage(Image img) {
