@@ -14,6 +14,8 @@ public class InstructionScreen extends Screen
 	private static Image spacebar = ImageLoader.loadCompatibleImage("sprites/spacebar.jpg");
 	private static Image master = ImageLoader.loadCompatibleImage("sprites/mysteryShip.png");
 	private static Image powerUp = ImageLoader.loadCompatibleImage("sprites/powerup.png");
+	private static Image barrier = ImageLoader.loadCompatibleImage("sprites/barrier.png");
+	
 	private int counter = 0;
 	
 	public InstructionScreen(GameState s, int w, int h) {
@@ -40,11 +42,14 @@ public class InstructionScreen extends Screen
 		g.setFont(new Font("Circular", Font.BOLD, 25));
 		g.setColor(Color.white);
 		
-		g.drawString("After all aliens are dead, hit          3 times to win", 170, 490);
-		g.drawImage(master, 490, 470, null);
+		g.drawString("After all aliens are dead, hit          3 times to win", 170, 470);
+		g.drawImage(master, 490, 450, null);
 		
-		g.drawString("Collect      To Gain A life", 300, 520);
-		g.drawImage(powerUp, 395, 502, 20, 20, null);
+		g.drawString("Collect      To Gain A Life", 300, 500);
+		g.drawImage(powerUp, 395, 480, 20, 20, null);
+		
+		g.drawString("Collect      To Replenish Barriers", 300, 525);
+		g.drawImage(barrier, 395, 510, 20, 20, null);
 		
 		g.setFont(new Font("Circular", Font.BOLD, 35));
 		g.setColor(Color.yellow);

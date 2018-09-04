@@ -29,6 +29,7 @@ public class GameScreen extends Screen
 	private int pos = 0;
 	int explodeTimer = 0;
 	boolean canCount = false;
+	boolean barrier = false;
 
 	Sound killInvader = new Sound("invaderkilled.wav");
 	Sound song = new Sound("spaceinvadersmusic.wav");
@@ -230,15 +231,34 @@ public class GameScreen extends Screen
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = (int) (Math.random() * 1000) + 500;
 			int randX = (int) (Math.random() * 730) + 20;
-			powerups.add(new PowerUp(randX,  20, 20, 20));
+			if(!barrier) {
+				powerups.add(new PowerUp(randX,  20, 20, 20, "life"));
+				barrier = true;
+			}
+			else {
+				powerups.add(new PowerUp(randX,  20, 20, 20, "barrier"));
+				barrier = false;
+			}
+			
 		}
+		
 
 		for(int a = powerups.size() - 1; a >= 0; a--) {
 			PowerUp powerup = powerups.get(a);
 			powerup.update();
-			if(player.intersects(powerup)) { 
+			if(player.intersects(powerup) && powerup.getType().equals("life")) { 
 				powerups.remove(a);
 				lives++;
+			}
+			else if(player.intersects(powerup) && powerup.getType().equals("barrier")) {
+				barriers.clear();
+				int xPos = 60;
+				for(int barrier = 0; barrier < 4; barrier++) {
+					barrierDamage.add(0);
+					barriers.add(new Barrier(xPos, 475, 72, 54, 2));
+					xPos+= 200;
+				}
+				
 			}
 		}
 
