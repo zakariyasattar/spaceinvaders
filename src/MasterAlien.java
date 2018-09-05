@@ -5,10 +5,6 @@ public class MasterAlien extends Alien{
 	/*
     This class represents a basic alien in the game
 	 */
-
-
-
-
 	private Image image = ImageLoader.loadCompatibleImage("sprites/mysteryShip.png");
 	private int updateCounter = 0;
 	private int shootCountDown = 40;

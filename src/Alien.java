@@ -37,8 +37,6 @@ public class Alien extends GameObject {
 		updateCounter++;
 		explodeCounter++;
 		
-
-		
 		if(timer == 20)
 			image = ImageLoader.loadCompatibleImage("sprites/alienA2.png");
 		timer++;

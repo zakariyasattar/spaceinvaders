@@ -232,7 +232,7 @@ public class GameScreen extends Screen
 
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = (int) (Math.random() * 1000) + 500;
-			int randX = (int) (Math.random() * 730) + 20;
+			int randX = (int) (Math.random() * 730) + 200;
 			if(!barrier) {
 				powerups.add(new PowerUp(randX,  20, 20, 20, "life"));
 				barrier = true;
@@ -254,6 +254,7 @@ public class GameScreen extends Screen
 			}
 			else if(player.intersects(powerup) && powerup.getType().equals("barrier")) {
 				barriers.clear();
+				powerups.remove(a);
 				int xPos = 60;
 				for(int barrier = 0; barrier < 4; barrier++) {
 					barrierDamage.add(0);
