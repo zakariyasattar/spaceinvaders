@@ -135,9 +135,11 @@ public class GameScreen extends Screen
 			a.update();
 			if(randomNums[i] < aliens.size()) {
 				a = aliens.get(randomNums[i]);
-				Laser l = a.shoot();
-				if(l !=null)
-					lasers.add(l);
+				if(!dead[randomNums[i]]) {
+					Laser l = a.shoot();
+					if(l !=null)
+						lasers.add(l);
+				}
 			}
 
 

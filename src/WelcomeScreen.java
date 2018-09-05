@@ -23,7 +23,7 @@ public class WelcomeScreen extends Screen
 
 		//set the drawing font and color
 		g.setFont(new Font("Circular", Font.BOLD, 42));
-		g.setColor(Color.magenta);
+		g.setColor(Color.orange);
 
 		//draw a message
 		if(counter < 40)
