@@ -21,6 +21,7 @@ public class GameScreen extends Screen
 	static int lives = 3;
 	private int score;
 	private int[] randomNums;
+	private int initCounter = 0;
 	private int timer = 0;
 	int x = 20;
 	int y = 80;
@@ -62,7 +63,16 @@ public class GameScreen extends Screen
 		for(int outer = 0; outer < 5; outer++) {
 			y += 55;
 			for(int inner = 0; inner < 7; inner++) {
-				aliens.add(new Alien(x, y, 37, 25, false, false));
+				if(outer < 2) {
+					aliens.add(new Alien(x, y, 37, 25, false, false));
+				}
+				else if(outer == 2) {
+					aliens.add(new AlienC(x, y, 37, 25, false, false));
+				}
+				else if(outer > 2) {
+					aliens.add(new OtherAlien(x, y, 37, 25, false, false));
+				}
+				
 				x+=55;
 			}
 			x = 20;
@@ -77,17 +87,11 @@ public class GameScreen extends Screen
 		aliens.add(new MasterAlien(185, 75, 37, 25, true));
 		randomNums = new int[aliens.size()];
 		dead = new boolean[aliens.size()];
-		for(int j = 0; j < 3; j++) {
-			int k = (int) (Math.random() * aliens.size()) + 0;
-			if(!dead[k]) {
-				randomNums[j] = k;
-			}
-		}
+		initArray();
 		score = 0;
 
 		x = 20;
 		y = 80;
-		//barrierDamageCounter++;
 	}
 
 	//render all the game objects in the game
@@ -114,6 +118,14 @@ public class GameScreen extends Screen
 		g.drawString("score: " + score, 660, 50);
 		g.drawString("lives:   " + lives, 660, 75);
 	}
+	public void initArray() {
+		for(int j = 0; j < 4; j++) {
+			int k = (int) (Math.random() * aliens.size()) + 0;
+			if(!dead[k]) {
+				randomNums[j] = k;
+			}
+		}
+	}
 
 
 	//update all the game objects in the game
@@ -124,7 +136,10 @@ public class GameScreen extends Screen
 		if(!song.isPlaying()) {
 			song.play();
 		}
-
+		if(initCounter == 100) {
+			initArray();
+			initCounter = 0;
+		}
 
 		for(int i = 0; i < aliens.size(); i++) {
 			timer++;
