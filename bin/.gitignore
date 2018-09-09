@@ -1,4 +1,5 @@
 /Alien.class
+/AlienC.class
 /Barrier.class
 /ClipSoundPlayer.class
 /GameObject.class
@@ -15,7 +16,7 @@
 /MP3SoundPlayer$1.class
 /MP3SoundPlayer.class
 /MasterAlien.class
-/MasterLaser.class
+/OtherAlien.class
 /Player.class
 /PowerUp.class
 /Screen.class
@@ -31,5 +32,3 @@
 /shoot.wav
 /spaceinvadersmusic.wav
 /sprites/
-/OtherAlien.class
-/AlienC.class

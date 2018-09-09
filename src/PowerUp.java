@@ -5,6 +5,8 @@ public class PowerUp extends GameObject{
 
 	private Image life = ImageLoader.loadCompatibleImage("sprites/powerup.png");
 	private Image barrier = ImageLoader.loadCompatibleImage("sprites/barrier.png");
+	private Image star = ImageLoader.loadCompatibleImage("sprites/star.png");
+			
 	private String powerup = "";
 
 	public PowerUp(int x, int y, int w, int h, String powerup) {
@@ -31,6 +33,14 @@ public class PowerUp extends GameObject{
 		}
 		else if(powerup.equals("barrier")){
 			g.drawImage(barrier,
+					(int)getBounds().x,
+					(int)getBounds().y,
+					(int)getBounds().width,
+					(int)getBounds().height,
+					null);
+		}
+		else if(powerup.equals("star")){
+			g.drawImage(star,
 					(int)getBounds().x,
 					(int)getBounds().y,
 					(int)getBounds().width,

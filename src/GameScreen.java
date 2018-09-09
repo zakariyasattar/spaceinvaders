@@ -30,7 +30,8 @@ public class GameScreen extends Screen
 	private int pos = 0;
 	int explodeTimer = 0;
 	boolean canCount = false;
-	boolean barrier = false;
+	int barrier = (int) (Math.random() * 3) + 1;
+	boolean godmode = false;
 
 	Sound killInvader = new Sound("invaderkilled.wav");
 	Sound song = new Sound("spaceinvadersmusic.wav");
@@ -50,8 +51,9 @@ public class GameScreen extends Screen
 	//initialize our variables before the next game begins
 	public void initGame() {
 		int xPos = 60;
+		barrier = (int) (Math.random() * 3) + 1;
 		song.play();
-		
+
 		barriers = new ArrayList<Barrier>();
 		barrierDamage = new ArrayList<Integer>();
 		aliens = new ArrayList<Alien>();
@@ -72,12 +74,12 @@ public class GameScreen extends Screen
 				else if(outer > 2) {
 					aliens.add(new OtherAlien(x, y, 37, 25, false, false));
 				}
-				
+
 				x+=55;
 			}
 			x = 20;
 		}
-		
+
 		for(int barrier = 0; barrier < 4; barrier++) {
 			barrierDamage.add(0);
 			barriers.add(new Barrier(xPos, 475, 72, 54, 2));
@@ -130,7 +132,6 @@ public class GameScreen extends Screen
 
 	//update all the game objects in the game
 	public void update() {
-
 		powerUpCountDown--;
 
 		if(!song.isPlaying()) {
@@ -149,10 +150,11 @@ public class GameScreen extends Screen
 			Alien a = aliens.get(i);
 			a.update();
 			if(randomNums[i] < aliens.size()) {
+
 				a = aliens.get(randomNums[i]);
 				if(!dead[randomNums[i]]) {
 					Laser l = a.shoot();
-					if(l !=null)
+					if(l != null)
 						lasers.add(l);
 				}
 			}
@@ -200,6 +202,10 @@ public class GameScreen extends Screen
 				else if(alien.intersects(laser) && laser.getDirection() == 1 && dead[l]){
 					break;
 				}
+				
+				if(player.intersects(alien) && laser.getDirection() == -1) { 
+					gameOver();
+				}
 			}
 
 			for(int b = barriers.size() - 1; b >= 0; b--) {
@@ -240,6 +246,7 @@ public class GameScreen extends Screen
 				}
 				break;
 			}
+			
 
 		}
 
@@ -248,17 +255,23 @@ public class GameScreen extends Screen
 		if(powerUpCountDown <= 0) {
 			powerUpCountDown = (int) (Math.random() * 1000) + 500;
 			int randX = (int) (Math.random() * 730) + 200;
-			if(!barrier) {
+			if(barrier == 1) {
 				powerups.add(new PowerUp(randX,  20, 20, 20, "life"));
-				barrier = true;
+				barrier = (int) (Math.random() * 3) + 1;
+
 			}
-			else {
+			else if(barrier == 2){
 				powerups.add(new PowerUp(randX,  20, 20, 20, "barrier"));
-				barrier = false;
+				barrier = (int) (Math.random() * 3) + 1;
+
 			}
-			
+			else if(barrier == 3) {
+				powerups.add(new PowerUp(randX,  20, 20, 20, "star"));
+				barrier = (int) (Math.random() * 3) + 1;
+			}
+
 		}
-		
+
 
 		for(int a = powerups.size() - 1; a >= 0; a--) {
 			PowerUp powerup = powerups.get(a);
@@ -274,9 +287,13 @@ public class GameScreen extends Screen
 				for(int barrier = 0; barrier < 4; barrier++) {
 					barrierDamage.add(0);
 					barriers.add(new Barrier(xPos, 475, 72, 54, 2));
-					xPos+= 200;
+					xPos += 200;
 				}
-				
+			}
+			else if(player.intersects(powerup) && powerup.getType().equals("star")) { 
+				powerups.remove(a);
+				godmode = true;
+
 			}
 		}
 
@@ -312,11 +329,37 @@ public class GameScreen extends Screen
 		else if(code == KeyEvent.VK_RIGHT)
 			player.setMovingRight(true);
 		else if(code == KeyEvent.VK_SPACE) {
-
-			Laser l  = player.shoot();
-			if(l != null) {
-				lasers.add(l);
-				shoot.play();
+			if(!godmode) {
+				Laser l  = player.shoot();
+				if(l != null) {
+					lasers.add(l);
+					shoot.play();
+				}
+			}
+			else {
+				Laser l  = player.shoot();
+				if(l != null) {
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					lasers.add(l);
+					shoot.play();
+					
+				}
+				godmode = false;
 			}
 		}
 	}
