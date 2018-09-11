@@ -24,13 +24,13 @@ public class Player extends GameObject {
         //if we're moving to the left, decrease the player's boundary x by 1
         if(movingLeft) {
         	if(getBounds().x > 0) {
-        		getBounds().x-=2;
+        		getBounds().x-=3;
         	}
         }
         
         if(movingRight) {
         	if(getBounds().x < 755) {
-        		getBounds().x+=2;
+        		getBounds().x+=3;
         	}
         }
         

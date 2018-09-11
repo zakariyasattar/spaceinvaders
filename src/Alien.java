@@ -10,7 +10,7 @@ public class Alien extends GameObject {
 
 	private Image image = ImageLoader.loadCompatibleImage("sprites/alienA1.png");
 	private int updateCounter = 0;
-	private int shootCountDown = (int) ((Math.random() * 240) + 30);
+	private int shootCountDown = (int) ((Math.random() * 600) + 30);
 	boolean edge = false;
 	private boolean master = false;
 	boolean explosion = false;
@@ -72,7 +72,7 @@ public class Alien extends GameObject {
 	}
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
-			shootCountDown = (int) ((Math.random() * 240) + 30);
+			shootCountDown = (int) ((Math.random() * 600) + 30);
 			return new Laser((int)getBounds().x, (int)(getBounds().height+getBounds().y), 4, 12, -1, ImageLoader.loadCompatibleImage("sprites/alienWiggleLaser1.png"), false);
 		}
 		else

@@ -7,7 +7,7 @@ public class MasterAlien extends Alien{
 	 */
 	private Image image = ImageLoader.loadCompatibleImage("sprites/mysteryShip.png");
 	private int updateCounter = 0;
-	private int shootCountDown = 40;
+	private int shootCountDown = 20;
 	boolean edge = false;
 	private boolean master = true;
 
