@@ -307,12 +307,16 @@ public class GameScreen extends Screen
 			}
 			else if(player.intersects(powerup) && powerup.getType().equals("barrier")) {
 				barriers.clear();
+				barrierDamage.clear();
 				powerups.remove(a);
 				int xPos = 60;
 				for(int barrier = 0; barrier < 4; barrier++) {
 					barrierDamage.add(0);
-					barriers.add(new Barrier(xPos, 475, 72, 54, 2));
+					barriers.add(new Barrier(xPos, 600, 72, 54, 2));
 					xPos += 200;
+				}
+				for(Barrier b : barriers) {
+					b.update();
 				}
 			}
 			else if(player.intersects(powerup) && powerup.getType().equals("star")) { 

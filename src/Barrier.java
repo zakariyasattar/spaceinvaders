@@ -14,8 +14,9 @@ public class Barrier extends GameObject {
 	}
 
 	public void update() {
-
-
+		if(getBounds().y >= 475) {
+			getBounds().y--;
+		}
 	}
 
 	public void setImage(Image img) {
