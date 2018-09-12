@@ -39,11 +39,6 @@ public class GameScreen extends Screen
 	Sound explosion = new Sound("explosion.wav");
 	Sound shoot = new Sound("shoot.wav");
 
-	//this class inherits the following final variables (so you can't change them!)
-	//
-	//  GameState state;    //variable that lets you switch to another screen
-	//  int width, height;  //the width and height of this screen
-
 	public GameScreen(GameState s, int w, int h) {
 		super(s, w, h);
 		initGame();
