@@ -42,7 +42,8 @@ public class AlienC extends Alien {
 			timer = 0;
 			image = ImageLoader.loadCompatibleImage("sprites/alienC1.png");
 		}
-
+		
+		
 		if(getBounds().x < 755 && edge == false) {
 			getBounds().x += 0.5;
 			if(getBounds().x == 755) {

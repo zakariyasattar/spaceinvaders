@@ -19,7 +19,9 @@ public class OtherAlien extends Alien {
 	int explodeTimer = 0;
 	int explodeCounter = 0;
 	public static boolean shouldRemove = false;
-
+	int counter = 0;
+	int i = 0;
+	
 	public OtherAlien(int x, int y, int w, int h, boolean master, boolean explosion) {
 		super(x, y, w, h, master, explosion);
 	}
@@ -27,20 +29,25 @@ public class OtherAlien extends Alien {
 		return master;
 	}
 
-	
+
 
 	public void update() {
 
 		//keep track of how many times this Alien has been updated
 		updateCounter++;
 		explodeCounter++;
-		
+
 		if(timer == 20)
 			image = ImageLoader.loadCompatibleImage("sprites/alienB2.png");
 		timer++;
 		if(timer > 40) {
 			timer = 0;
 			image = ImageLoader.loadCompatibleImage("sprites/alienB1.png");
+		}
+
+		if(getBounds().y > 421.875 && getBounds().x == 5) {
+			GameScreen.barriers.clear();
+			GameScreen.canDraw(false);
 		}
 
 		if(getBounds().x < 755 && edge == false) {
@@ -61,7 +68,7 @@ public class OtherAlien extends Alien {
 		if(shootCountDown > 0) {
 			shootCountDown--;
 		}
-		
+
 
 	}
 	public void setExplode (boolean explode, int pos) {
@@ -76,7 +83,7 @@ public class OtherAlien extends Alien {
 		else
 			return null;
 	}
-	
+
 	public void setImage(Image img) {
 		image = img;
 	}
@@ -85,12 +92,12 @@ public class OtherAlien extends Alien {
 	//draw the image represented by the alien
 	public void render(Graphics2D g) {
 		if(!explosion) {
-				g.drawImage(image,
-						(int)getBounds().x,
-						(int)getBounds().y,
-						(int)getBounds().width,
-						(int)getBounds().height,
-						null);
+			g.drawImage(image,
+					(int)getBounds().x,
+					(int)getBounds().y,
+					(int)getBounds().width,
+					(int)getBounds().height,
+					null);
 		}
 		else if(explosion){
 			if(explodeTimer != 20) {
@@ -101,13 +108,13 @@ public class OtherAlien extends Alien {
 						(int)getBounds().width,
 						(int)getBounds().height,
 						null);
-				
+
 			}
 			else if(explodeTimer == 20) {
 				shouldRemove = true;
 			}
 		}
-		
+
 
 	}
 

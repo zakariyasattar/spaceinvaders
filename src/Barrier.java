@@ -16,6 +16,12 @@ public class Barrier extends GameObject {
 	public void update() {
 		if(getBounds().y >= 475) {
 			getBounds().y--;
+			if(getBounds().y != 474) {
+				GameScreen.canTakeDamage(false);
+			}
+			else {
+				GameScreen.canTakeDamage(true);
+			}
 		}
 	}
 

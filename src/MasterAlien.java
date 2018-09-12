@@ -16,12 +16,7 @@ public class MasterAlien extends Alien{
 	}
 
 	public void update() {
-
-		//keep track of how many times this Alien has been updated
-		updateCounter++;
-
-		//every 120th update, move the bounds of the alien half it's width to the right
-
+		
 		if(getBounds().x < 755 && edge == false) {
 			getBounds().x += 0.5;
 			if(getBounds().x == 755) {

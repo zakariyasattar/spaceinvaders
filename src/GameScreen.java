@@ -26,6 +26,8 @@ public class GameScreen extends Screen
 	int y = 80;
 	private int count = 0;
 	int masterPos = 0;
+	public static boolean canTakeDamage = true;
+	public static boolean canGetBarrier = true;
 
 	private boolean[] dead;
 	private int pos = 0;
@@ -44,8 +46,17 @@ public class GameScreen extends Screen
 		initGame();
 	}
 
+	public static void canDraw(boolean b) {
+		canGetBarrier = b;
+	}
+	
+	public static void canTakeDamage(boolean b) {
+		canTakeDamage = b;
+	}
+
 	//initialize our variables before the next game begins
 	public void initGame() {
+		godmode = false;
 		int xPos = 60;
 		barrier = (int) (Math.random() * 3) + 1;
 		song.play();
@@ -102,6 +113,9 @@ public class GameScreen extends Screen
 	//render all the game objects in the game
 	public void render(Graphics2D g) {
 
+		for(Barrier b : barriers) {
+			b.render(g);
+		}
 		for(Laser l : lasers) {
 			l.render(g);
 		}
@@ -110,9 +124,6 @@ public class GameScreen extends Screen
 		}
 		for(PowerUp p : powerups) {
 			p.render(g);
-		}
-		for(Barrier b : barriers) {
-			b.render(g);
 		}
 
 		player.render(g);
@@ -230,7 +241,7 @@ public class GameScreen extends Screen
 
 				for(int b = barriers.size() - 1; b >= 0; b--) {
 					Barrier barrier = barriers.get(b);
-					if(barrier.intersects(laser)) {
+					if(barrier.intersects(laser) && canTakeDamage) {
 						lasers.remove(k);
 						barrierDamage.set(b, barrierDamage.get(b)+1);
 						if(barrierDamage.get(b) == 1) {
@@ -280,7 +291,8 @@ public class GameScreen extends Screen
 				barrier = (int) (Math.random() * 3) + 1;
 
 			}
-			else if(barrier == 2){
+			
+			else if(barrier == 2 && canGetBarrier){
 				powerups.add(new PowerUp(randX,  20, 20, 20, "barrier"));
 				barrier = (int) (Math.random() * 3) + 1;
 
@@ -288,6 +300,9 @@ public class GameScreen extends Screen
 			else if(barrier == 3) {
 				powerups.add(new PowerUp(randX,  20, 20, 20, "star"));
 				barrier = (int) (Math.random() * 3) + 1;
+			}
+			else {
+				powerups.add(new PowerUp(randX,  20, 20, 20, "star"));
 			}
 
 		}
@@ -346,7 +361,7 @@ public class GameScreen extends Screen
 		initGame();
 
 		state.switchToWinScreen();
-		
+
 	}
 
 	//handles key press events
