@@ -30,6 +30,9 @@ public class Laser extends GameObject {
 	public int getDirection() {
 		return direction;
 	}
+	public void setMaster(boolean b) {
+		masterLaser = b;
+	}
 	public boolean isMaster() {
 		return masterLaser;
 	}

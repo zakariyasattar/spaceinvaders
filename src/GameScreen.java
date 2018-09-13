@@ -26,6 +26,7 @@ public class GameScreen extends Screen
 	int y = 80;
 	private int count = 0;
 	int masterPos = 0;
+	boolean isPlaying = false;
 	public static boolean canTakeDamage = true;
 	public static boolean canGetBarrier = true;
 
@@ -37,7 +38,7 @@ public class GameScreen extends Screen
 	boolean godmode = false;
 
 	Sound killInvader = new Sound("invaderkilled.wav");
-	Sound song = new Sound("spaceinvadersmusic.wav");
+	public static Sound song = new Sound("spaceinvadersmusic.wav");
 	Sound explosion = new Sound("explosion.wav");
 	Sound shoot = new Sound("shoot.wav");
 
@@ -49,7 +50,7 @@ public class GameScreen extends Screen
 	public static void canDraw(boolean b) {
 		canGetBarrier = b;
 	}
-	
+
 	public static void canTakeDamage(boolean b) {
 		canTakeDamage = b;
 	}
@@ -60,6 +61,7 @@ public class GameScreen extends Screen
 		int xPos = 60;
 		barrier = (int) (Math.random() * 3) + 1;
 		song.play();
+		isPlaying = true;
 
 		barriers = new ArrayList<Barrier>();
 		barrierDamage = new ArrayList<Integer>();
@@ -148,7 +150,9 @@ public class GameScreen extends Screen
 	public void update() {
 		Alien aliend = aliens.get(masterPos);
 		Laser laser1 = aliend.shoot();
+
 		if(laser1 != null) {
+			laser1.setMaster(true);
 			lasers.add(laser1);
 		}
 		powerUpCountDown--;
@@ -163,6 +167,7 @@ public class GameScreen extends Screen
 
 		if(!song.isPlaying()) {
 			song.play();
+			isPlaying = true;
 		}
 
 		if(initCounter == 100) {
@@ -205,8 +210,39 @@ public class GameScreen extends Screen
 					if(score >= 35) {
 						laser.setSpeed(8);
 					}
+					
+					if(player.intersects(laser) && laser.getDirection() == -1 && laser.isMaster()) { 
+						lives -= 2;
+						lasers.remove(k);
+						if(lives <= 0) {
+							lasers.clear();
+							aliens.clear();
+							barriers.clear();
+							powerups.clear();
+							song.stop();
+							gameOver();
+						}
+						break;
+					}
+					
+					else if(player.intersects(laser) && laser.getDirection() == -1) { 
+						playerDamageCounter++;
+						lasers.remove(laser);
+						if(playerDamageCounter >= 1) {
+							lives--; 
+							playerDamageCounter = 0;
+							if(lives <= 0) {
+								lasers.clear();
+								aliens.clear();
+								barriers.clear();
+								powerups.clear();
+								song.stop();
+								gameOver();
 
-
+							}
+						}
+						break;
+					}
 
 					if(alien.intersects(laser) && laser.getDirection() == 1 && alien.isMaster() == true) { 
 						lasers.remove(k);
@@ -235,48 +271,37 @@ public class GameScreen extends Screen
 					}
 
 					if(player.intersects(alien) && laser.getDirection() == -1) { 
+						lasers.clear();
+						aliens.clear();
+						barriers.clear();
+						powerups.clear();
+						song.stop();
 						gameOver();
 					}
 				}
 
 				for(int b = barriers.size() - 1; b >= 0; b--) {
 					Barrier barrier = barriers.get(b);
-					if(barrier.intersects(laser) && canTakeDamage) {
+					if(barrier.intersects(laser)) {
 						lasers.remove(k);
-						barrierDamage.set(b, barrierDamage.get(b)+1);
-						if(barrierDamage.get(b) == 1) {
-							barrier.setImage(ImageLoader.loadCompatibleImage("sprites/firsthitbarrier.png"));
-						}
-						else if(barrierDamage.get(b) == 2) {
-							barrier.setImage(ImageLoader.loadCompatibleImage("sprites/secondhitbarrier.png"));
-						}
-						else if(barrierDamage.get(b) == 3) {
-							barriers.remove(b);
-							barrierDamage.remove(b);
+						if(canTakeDamage) {
+							barrierDamage.set(b, barrierDamage.get(b)+1);
+							if(barrierDamage.get(b) == 1) {
+								barrier.setImage(ImageLoader.loadCompatibleImage("sprites/firsthitbarrier.png"));
+							}
+							else if(barrierDamage.get(b) == 2) {
+								barrier.setImage(ImageLoader.loadCompatibleImage("sprites/secondhitbarrier.png"));
+							}
+							else if(barrierDamage.get(b) == 3) {
+								barriers.remove(b);
+								barrierDamage.remove(b);
+							}
 						}
 					}
 				}
-				if(player.intersects(laser) && laser.getDirection() == -1 && laser.isMaster()) { 
-					lives -= 2;
-					lasers.remove(k);
-					if(lives <= 0) {
-						gameOver();
-					}
-					break;
-				}
+				
 
-				else if(player.intersects(laser) && laser.getDirection() == -1) { 
-					playerDamageCounter++;
-					lasers.remove(laser);
-					if(playerDamageCounter >= 1) {
-						lives--; 
-						playerDamageCounter = 0;
-						if(lives <= 0) {
-							gameOver();
-						}
-					}
-					break;
-				}
+				
 
 
 			}
@@ -291,7 +316,7 @@ public class GameScreen extends Screen
 				barrier = (int) (Math.random() * 3) + 1;
 
 			}
-			
+
 			else if(barrier == 2 && canGetBarrier){
 				powerups.add(new PowerUp(randX,  20, 20, 20, "barrier"));
 				barrier = (int) (Math.random() * 3) + 1;

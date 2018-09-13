@@ -43,6 +43,7 @@ public class MasterAlien extends Alien{
 	public boolean isMaster() {
 		return true;
 	}
+	
 	public Laser shoot() {
 		if(shootCountDown <= 0) {
 			shootCountDown = 400;

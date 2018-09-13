@@ -14,6 +14,7 @@ public class GameOverScreen extends Screen
 	}
 
 	public void render(Graphics2D g) {
+		GameScreen.song.stop();
 		g.setFont(new Font("Circular", Font.BOLD, 60));
 		g.setColor(Color.red);
 
@@ -27,6 +28,7 @@ public class GameOverScreen extends Screen
 	}
 
 	public void update() {
+		
 	}
 
 	public void keyPressed(KeyEvent e)
