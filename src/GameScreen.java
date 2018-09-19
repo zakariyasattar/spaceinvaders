@@ -150,7 +150,6 @@ public class GameScreen extends Screen
 	public void update() {
 		Alien aliend = aliens.get(masterPos);
 		Laser laser1 = aliend.shoot();
-
 		if(laser1 != null) {
 			laser1.setMaster(true);
 			lasers.add(laser1);
